@@ -4,7 +4,7 @@ import {
   SYSTEM_PROMPT,
   buildAnalysisPrompt,
 } from "@/lib/ai-detector/prompt";
-import type { DeepAnalysisResult } from "@/lib/ai-detector/types";
+import type { HeuristicResult } from "@/lib/ai-detector/types";
 
 // Simple in-memory rate limiter (resets on server restart)
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -32,6 +32,16 @@ function getClientIp(request: NextRequest): string {
   );
 }
 
+function isValidHeuristics(h: unknown): h is HeuristicResult {
+  if (!h || typeof h !== "object") return false;
+  const obj = h as Record<string, unknown>;
+  return (
+    typeof obj.overallScore === "number" &&
+    Array.isArray(obj.metrics) &&
+    obj.metrics.length > 0
+  );
+}
+
 export async function POST(request: NextRequest) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
@@ -49,18 +59,25 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  let body: { text?: string };
+  let body: { text?: string; heuristics?: unknown };
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { text } = body;
+  const { text, heuristics } = body;
 
   if (!text || typeof text !== "string") {
     return NextResponse.json(
       { error: "Text is required" },
+      { status: 400 },
+    );
+  }
+
+  if (!isValidHeuristics(heuristics)) {
+    return NextResponse.json(
+      { error: "Heuristic scores are required" },
       { status: 400 },
     );
   }
@@ -118,7 +135,7 @@ export async function POST(request: NextRequest) {
             reasoning: {
               type: SchemaType.STRING,
               description:
-                "2-3 sentence explanation of why the text was classified this way",
+                "Detailed analytical paragraph referencing specific textual evidence and heuristic scores",
             },
             patterns: {
               type: SchemaType.ARRAY,
@@ -137,9 +154,11 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    const result = await model.generateContent(buildAnalysisPrompt(text));
+    const result = await model.generateContent(
+      buildAnalysisPrompt(text, heuristics),
+    );
     const responseText = result.response.text();
-    const parsed: DeepAnalysisResult = JSON.parse(responseText);
+    const parsed = JSON.parse(responseText);
 
     return NextResponse.json(parsed);
   } catch (error) {

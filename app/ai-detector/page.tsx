@@ -46,7 +46,7 @@ const FAQ_ITEMS = [
   {
     question: "How does the detection work?",
     answer:
-      "Two stages in parallel. A client-side scan checks seven statistical markers in your browser (sentence uniformity, vocabulary breadth, burstiness, phrase repetition, and others). A server-side model then reads each sentence individually and assigns a classification with a confidence score.",
+      "Seven statistical checks run instantly in your browser, then those scores get sent alongside your text to a server-side model. It reads each sentence, factors in the heuristic data, and produces a single unified report with sentence-level classifications and detailed reasoning.",
   },
   {
     question: "Can AI detectors be wrong?",
@@ -56,7 +56,12 @@ const FAQ_ITEMS = [
   {
     question: "Is this free?",
     answer:
-      "Five deep scans per day, no account needed. The heuristic scan is unlimited.",
+      "Five scans per day, no account needed. Each scan gives you the full report with sentence-level analysis, reasoning, and statistical indicators.",
+  },
+  {
+    question: "Can I download the report?",
+    answer:
+      "Yes. After any scan you can download a PDF or copy the results as formatted markdown. The PDF is always in light mode for readability, regardless of your theme setting.",
   },
   {
     question: "What's the minimum text length?",
@@ -115,12 +120,12 @@ function JsonLd() {
       {
         "@type": "HowToStep",
         name: "Click Analyse",
-        text: "Click the Analyse button to run instant heuristic analysis and deep AI-powered scanning.",
+        text: "Click Analyse to run statistical checks and AI-powered sentence classification in one pass.",
       },
       {
         "@type": "HowToStep",
-        name: "Review results",
-        text: "Review the sentence-by-sentence breakdown, overall verdict, and detailed reasoning for each classification.",
+        name: "Review and download",
+        text: "Read the unified report with verdict, reasoning, sentence highlighting, and statistical indicators. Download as PDF or copy as markdown.",
       },
     ],
   };
@@ -246,31 +251,33 @@ export default function AiDetectorPage() {
                 <div className="bg-white p-5 dark:bg-neutral-950">
                   <p className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">Step 1</p>
                   <h3 className="mt-1.5 font-medium text-neutral-900 dark:text-neutral-100">
-                    Statistical scan
+                    Paste and analyse
                   </h3>
                   <p className="mt-1.5 text-sm text-neutral-500 dark:text-neutral-400">
-                    Seven heuristic checks run client-side in milliseconds.
-                    Nothing leaves your browser.
+                    Drop your text in and click Analyse. Seven statistical
+                    checks run instantly in your browser, then feed into a
+                    server-side model for a combined verdict.
                   </p>
                 </div>
                 <div className="bg-white p-5 dark:bg-neutral-950">
                   <p className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">Step 2</p>
                   <h3 className="mt-1.5 font-medium text-neutral-900 dark:text-neutral-100">
-                    Deep scan
+                    Read the report
                   </h3>
                   <p className="mt-1.5 text-sm text-neutral-500 dark:text-neutral-400">
-                    A server-side model classifies each sentence individually
-                    and colour-codes the results inline.
+                    One unified report: overall verdict, detailed reasoning,
+                    sentence-level colour coding, and every statistical
+                    indicator that contributed to the result.
                   </p>
                 </div>
                 <div className="bg-white p-5 dark:bg-neutral-950">
                   <p className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">Step 3</p>
                   <h3 className="mt-1.5 font-medium text-neutral-900 dark:text-neutral-100">
-                    Reasoning
+                    Download or share
                   </h3>
                   <p className="mt-1.5 text-sm text-neutral-500 dark:text-neutral-400">
-                    You see which patterns were identified and why each
-                    sentence was classified the way it was.
+                    Copy the report as markdown or download a clean PDF.
+                    Handy when you need to send evidence to someone else.
                   </p>
                 </div>
               </div>
@@ -329,11 +336,11 @@ export default function AiDetectorPage() {
                 </div>
                 <div>
                   <dt className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
-                    Dual analysis
+                    Downloadable report
                   </dt>
                   <dd className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
-                    Statistical heuristics and a model-based scan, running
-                    concurrently.
+                    Copy as markdown or download a PDF. Send it to a
+                    colleague, attach it to a submission.
                   </dd>
                 </div>
                 <div>
@@ -341,8 +348,7 @@ export default function AiDetectorPage() {
                     Free, no account
                   </dt>
                   <dd className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
-                    Five deep scans per day. The statistical scan is
-                    unlimited.
+                    Five scans per day, full report every time.
                   </dd>
                 </div>
               </dl>
@@ -432,6 +438,12 @@ export default function AiDetectorPage() {
                       <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">5</td>
                       <td className="px-5 py-3">Unlimited</td>
                       <td className="px-5 py-3">3</td>
+                    </tr>
+                    <tr className="border-b border-neutral-200/60 dark:border-neutral-800/60">
+                      <td className="px-5 py-3">Downloadable PDF</td>
+                      <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">Yes</td>
+                      <td className="px-5 py-3">No</td>
+                      <td className="px-5 py-3">No</td>
                     </tr>
                     <tr>
                       <td className="px-5 py-3">Sign-up needed</td>
