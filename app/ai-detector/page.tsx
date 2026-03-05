@@ -29,44 +29,44 @@ export const metadata: Metadata = {
 
 const FAQ_ITEMS = [
   {
-    question: "How accurate are AI detectors?",
+    question: "How accurate is this AI detector?",
     answer:
-      "AI detectors typically achieve 85-95% accuracy on pure AI-generated text. Accuracy can vary with heavily edited or mixed human-AI content. Our detector combines statistical heuristics with deep LLM analysis for the most reliable results, and highlights exactly which sentences triggered detection so you can verify the analysis yourself.",
+      "85-95% on unedited AI output. Blended text (human-edited ChatGPT drafts, for instance) is harder. That's why we show sentence-level results instead of a single score.",
   },
   {
-    question: "Can this AI detector detect ChatGPT content?",
+    question: "Which AI models can it detect?",
     answer:
-      "Yes. Our AI content detector analyses text patterns characteristic of all major language models including ChatGPT (GPT-4, GPT-5), Claude, Gemini, DeepSeek, and Llama. The deep analysis examines sentence structure, vocabulary patterns, and writing style to identify AI-generated content regardless of which model produced it.",
+      "ChatGPT (GPT-4, GPT-4o, GPT-5), Claude (Sonnet, Opus, Haiku), Google Gemini (Pro, Ultra), DeepSeek-V3, Llama 3, Llama 4, Mistral, Mixtral, Copilot, Jasper, and Perplexity. The detection is structural, so new models based on similar architectures will generally be caught too.",
   },
   {
     question: "Will Google penalise AI-generated content?",
     answer:
-      "Google has stated that AI-generated content is not inherently against their guidelines. However, low-quality, unoriginal, or spammy content — whether written by humans or AI — may be penalised. Using an AI content detector helps ensure your content maintains the quality and originality that search engines reward.",
+      "Google's position is that AI content isn't against their guidelines. Thin, unoriginal content is. A detector flags the mechanical patterns that make text look mass-produced, which is what search engines actually care about.",
   },
   {
-    question: "How does our AI detector work?",
+    question: "How does the detection work?",
     answer:
-      "Our detector uses two layers of analysis. First, instant client-side heuristics scan for statistical patterns like sentence uniformity, vocabulary repetition, and formatting quirks. Then, a deep AI-powered analysis examines each sentence individually, providing a confidence score and detailed reasoning for every classification.",
+      "Two stages in parallel. A client-side scan checks seven statistical markers in your browser (sentence uniformity, vocabulary breadth, burstiness, phrase repetition, and others). A server-side model then reads each sentence individually and assigns a classification with a confidence score.",
   },
   {
     question: "Can AI detectors be wrong?",
     answer:
-      "Yes — no AI detector is 100% accurate. False positives (human text flagged as AI) and false negatives (AI text missed) can occur. Formal academic writing and non-native English text are more prone to false positives. Our detector mitigates this by providing sentence-level analysis and detailed reasoning, so you can evaluate the evidence yourself rather than relying on a single score.",
+      "Yes. Academic prose and non-native English trip false positives more often than they should. This is an industry-wide problem, and it's the main reason we show the evidence instead of hiding it behind a percentage.",
   },
   {
-    question: "Is this AI detector free to use?",
+    question: "Is this free?",
     answer:
-      "Yes. You get 5 free deep analysis scans per day with no sign-up required. The instant heuristic analysis is always free and unlimited. Sign up for an account to get additional daily scans.",
+      "Five deep scans per day, no account needed. The heuristic scan is unlimited.",
   },
   {
-    question: "What is the minimum text length for detection?",
+    question: "What's the minimum text length?",
     answer:
-      "We require a minimum of 50 words for accurate analysis. Shorter texts do not provide enough statistical data for reliable AI detection. For best results, analyse passages of 100 words or more.",
+      "50 words. Below that there isn't enough material for a meaningful statistical analysis. Aim for 100+ words where possible.",
   },
   {
-    question: "Can Turnitin detect AI writing?",
+    question: "How does this compare to Turnitin?",
     answer:
-      "Turnitin has its own AI detection system, but it is primarily available to educational institutions with a Turnitin subscription. Our free AI detector provides comparable analysis with the added benefit of sentence-level highlighting and detailed reasoning — available to everyone, no institutional subscription needed.",
+      "Turnitin's AI detection requires an institutional subscription. We offer comparable sentence-level analysis for free, with published reasoning for each classification.",
   },
 ];
 
@@ -212,10 +212,9 @@ export default function AiDetectorPage() {
               AI Content Detector
             </h1>
             <p className="mt-4 text-lg text-neutral-500 dark:text-neutral-400">
-              Paste your text for instant analysis with sentence-level
-              highlighting.
-              <br className="hidden sm:inline" /> Detect ChatGPT, Claude, and
-              Gemini content in seconds.
+              Paste your text and get a sentence-by-sentence verdict
+              <br className="hidden sm:inline" /> with the reasoning behind
+              every classification.
             </p>
           </header>
 
@@ -223,149 +222,130 @@ export default function AiDetectorPage() {
           <AiDetectorTool />
 
           {/* SEO Content */}
-          <article className="mt-24 space-y-16">
+          <article className="mt-24 space-y-20">
             {/* What is an AI content detector? */}
             <section>
               <h2 className="text-2xl font-semibold tracking-tight">
                 What is an AI content detector?
               </h2>
-              <div className="mt-4 space-y-4 text-neutral-500 dark:text-neutral-400 leading-relaxed">
-                <p>
-                  An AI content detector is a tool that analyses text to
-                  determine whether it was written by a human or generated by an
-                  artificial intelligence model such as ChatGPT, Claude, or
-                  Gemini. These tools examine writing patterns, statistical
-                  features, and stylistic cues that differ between human and
-                  machine-generated text.
-                </p>
-                <p>
-                  AI-generated text tends to exhibit certain telltale
-                  characteristics: uniform sentence lengths, limited vocabulary
-                  diversity, excessive use of em dashes, avoidance of
-                  contractions and negations, and a preference for lists in
-                  groups of three. Human writing, by contrast, is messier and
-                  more varied — mixing short punchy sentences with long complex
-                  ones, using slang and colloquialisms, and displaying
-                  inconsistent formatting.
-                </p>
-              </div>
+              <p className="mt-4 text-neutral-500 dark:text-neutral-400 leading-relaxed">
+                It reads your writing and determines whether a person or a
+                language model produced it. AI prose carries a statistical
+                fingerprint: metronomic sentence lengths, a narrow vocabulary
+                band, an avoidance of contractions. Human writing is more
+                irregular by nature, and detectors exploit that contrast.
+              </p>
             </section>
 
             {/* How it works */}
             <section>
               <h2 className="text-2xl font-semibold tracking-tight">
-                How our AI detector works
+                How it works
               </h2>
-              <div className="mt-4 space-y-4 text-neutral-500 dark:text-neutral-400 leading-relaxed">
-                <p>
-                  Our detector uses a two-layer approach for maximum accuracy and
-                  transparency:
-                </p>
-                <div className="space-y-6 mt-6">
-                  <div className="border-l-2 border-neutral-200 dark:border-neutral-800 pl-5">
-                    <h3 className="font-medium text-neutral-800 dark:text-neutral-200">
-                      Step 1: Instant pattern analysis
-                    </h3>
-                    <p className="mt-2">
-                      The moment you click Analyse, our client-side engine scans
-                      your text for seven statistical markers of AI writing:
-                      sentence uniformity, vocabulary diversity, writing
-                      burstiness, repeated phrases, negation density, em dash
-                      frequency, and list patterns. Results appear in
-                      milliseconds.
-                    </p>
-                  </div>
-                  <div className="border-l-2 border-neutral-200 dark:border-neutral-800 pl-5">
-                    <h3 className="font-medium text-neutral-800 dark:text-neutral-200">
-                      Step 2: Deep AI-powered scan
-                    </h3>
-                    <p className="mt-2">
-                      Simultaneously, our server-side analysis examines every
-                      sentence individually using advanced AI. Each sentence
-                      receives its own classification — AI, human, or uncertain —
-                      with a confidence score and colour-coded highlighting so
-                      you can see exactly which parts of the text triggered
-                      detection.
-                    </p>
-                  </div>
-                  <div className="border-l-2 border-neutral-200 dark:border-neutral-800 pl-5">
-                    <h3 className="font-medium text-neutral-800 dark:text-neutral-200">
-                      Step 3: Transparent reasoning
-                    </h3>
-                    <p className="mt-2">
-                      Unlike other detectors that give you a percentage and
-                      nothing else, we explain <em>why</em> the text was
-                      classified the way it was. You see the specific patterns
-                      detected — whether that is uniform paragraph structure,
-                      lack of contractions, or excessive hedging language.
-                    </p>
-                  </div>
+              <div className="mt-6 grid gap-px overflow-hidden rounded-xl border border-neutral-200 bg-neutral-200 dark:border-neutral-800 dark:bg-neutral-800">
+                <div className="bg-white p-5 dark:bg-neutral-950">
+                  <p className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">Step 1</p>
+                  <h3 className="mt-1.5 font-medium text-neutral-900 dark:text-neutral-100">
+                    Statistical scan
+                  </h3>
+                  <p className="mt-1.5 text-sm text-neutral-500 dark:text-neutral-400">
+                    Seven heuristic checks run client-side in milliseconds.
+                    Nothing leaves your browser.
+                  </p>
+                </div>
+                <div className="bg-white p-5 dark:bg-neutral-950">
+                  <p className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">Step 2</p>
+                  <h3 className="mt-1.5 font-medium text-neutral-900 dark:text-neutral-100">
+                    Deep scan
+                  </h3>
+                  <p className="mt-1.5 text-sm text-neutral-500 dark:text-neutral-400">
+                    A server-side model classifies each sentence individually
+                    and colour-codes the results inline.
+                  </p>
+                </div>
+                <div className="bg-white p-5 dark:bg-neutral-950">
+                  <p className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">Step 3</p>
+                  <h3 className="mt-1.5 font-medium text-neutral-900 dark:text-neutral-100">
+                    Reasoning
+                  </h3>
+                  <p className="mt-1.5 text-sm text-neutral-500 dark:text-neutral-400">
+                    You see which patterns were identified and why each
+                    sentence was classified the way it was.
+                  </p>
                 </div>
               </div>
             </section>
 
-            {/* Why tryai.tools */}
+            {/* Supported models — SEO keyword block */}
             <section>
               <h2 className="text-2xl font-semibold tracking-tight">
-                Why tryai.tools AI detector?
+                Supported models
               </h2>
-              <div className="mt-4 space-y-4 text-neutral-500 dark:text-neutral-400 leading-relaxed">
-                <p>
-                  Most AI detectors give you a single percentage and leave you
-                  guessing. We built something better:
-                </p>
-                <ul className="space-y-2 ml-4">
-                  <li className="flex gap-2">
-                    <span className="text-neutral-500 shrink-0">&bull;</span>
-                    <span>
-                      <strong className="text-neutral-800 dark:text-neutral-200">
-                        Sentence-level highlighting
-                      </strong>{" "}
-                      — see exactly which sentences look AI-generated, not just
-                      an overall score
-                    </span>
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-neutral-500 shrink-0">&bull;</span>
-                    <span>
-                      <strong className="text-neutral-800 dark:text-neutral-200">
-                        Transparent reasoning
-                      </strong>{" "}
-                      — understand <em>why</em> text was flagged with specific
-                      pattern explanations
-                    </span>
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-neutral-500 shrink-0">&bull;</span>
-                    <span>
-                      <strong className="text-neutral-800 dark:text-neutral-200">
-                        Dual-layer analysis
-                      </strong>{" "}
-                      — instant statistical heuristics plus deep AI-powered
-                      scanning
-                    </span>
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-neutral-500 shrink-0">&bull;</span>
-                    <span>
-                      <strong className="text-neutral-800 dark:text-neutral-200">
-                        Free, no sign-up
-                      </strong>{" "}
-                      — 5 deep scans per day with no account needed
-                    </span>
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-neutral-500 shrink-0">&bull;</span>
-                    <span>
-                      <strong className="text-neutral-800 dark:text-neutral-200">
-                        All major models
-                      </strong>{" "}
-                      — detects content from ChatGPT, Claude, Gemini, DeepSeek,
-                      Llama, and more
-                    </span>
-                  </li>
-                </ul>
+              <p className="mt-4 text-neutral-500 dark:text-neutral-400 leading-relaxed">
+                Detection is structural, not model-specific. It works on
+                output from any major language model.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-2">
+                {[
+                  "ChatGPT", "GPT-4", "GPT-4o", "GPT-5",
+                  "Claude", "Claude 3.5 Sonnet", "Claude Opus",
+                  "Gemini", "Gemini Pro", "Gemini Ultra",
+                  "DeepSeek", "DeepSeek-V3",
+                  "Llama 3", "Llama 4", "Mistral", "Mixtral",
+                  "Copilot", "Jasper", "Perplexity",
+                ].map((model) => (
+                  <span
+                    key={model}
+                    className="rounded-md border border-neutral-200 bg-neutral-50 px-2.5 py-1 text-xs text-neutral-600 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-400"
+                  >
+                    {model}
+                  </span>
+                ))}
               </div>
+            </section>
+
+            {/* Why this detector */}
+            <section>
+              <h2 className="text-2xl font-semibold tracking-tight">
+                Why this detector?
+              </h2>
+              <dl className="mt-6 grid gap-5 sm:grid-cols-2">
+                <div>
+                  <dt className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                    Sentence-level highlighting
+                  </dt>
+                  <dd className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+                    Each sentence is classified individually in the original
+                    text.
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                    Published reasoning
+                  </dt>
+                  <dd className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+                    Every verdict comes with the evidence behind it.
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                    Dual analysis
+                  </dt>
+                  <dd className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+                    Statistical heuristics and a model-based scan, running
+                    concurrently.
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                    Free, no account
+                  </dt>
+                  <dd className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+                    Five deep scans per day. The statistical scan is
+                    unlimited.
+                  </dd>
+                </div>
+              </dl>
             </section>
 
             {/* Use cases */}
@@ -373,40 +353,33 @@ export default function AiDetectorPage() {
               <h2 className="text-2xl font-semibold tracking-tight">
                 Who uses AI content detectors?
               </h2>
-              <div className="mt-6 grid gap-6 sm:grid-cols-2">
-                <div className="rounded-xl border border-neutral-200 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900/30 p-5">
-                  <h3 className="font-medium text-neutral-800 dark:text-neutral-200">Students</h3>
-                  <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
-                    Check your own work before submission to ensure it does not
-                    accidentally trigger AI detection flags. Understand what
-                    makes writing look AI-generated so you can develop a more
-                    distinctive voice.
+              <div className="mt-6 grid gap-px overflow-hidden rounded-xl border border-neutral-200 bg-neutral-200 dark:border-neutral-800 dark:bg-neutral-800 sm:grid-cols-2">
+                <div className="bg-white p-5 dark:bg-neutral-950">
+                  <h3 className="text-sm font-medium text-neutral-900 dark:text-neutral-100">Students</h3>
+                  <p className="mt-1.5 text-sm text-neutral-500 dark:text-neutral-400">
+                    Check your work before submission. Better to know now
+                    if something reads as AI-generated.
                   </p>
                 </div>
-                <div className="rounded-xl border border-neutral-200 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900/30 p-5">
-                  <h3 className="font-medium text-neutral-800 dark:text-neutral-200">Teachers</h3>
-                  <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
-                    Screen student submissions for potential AI usage. Our
-                    sentence-level analysis helps you identify specific passages
-                    to discuss with students, rather than making blanket
-                    accusations based on a single score.
+                <div className="bg-white p-5 dark:bg-neutral-950">
+                  <h3 className="text-sm font-medium text-neutral-900 dark:text-neutral-100">Educators</h3>
+                  <p className="mt-1.5 text-sm text-neutral-500 dark:text-neutral-400">
+                    Sentence-level evidence you can point to. Useful in a
+                    conversation where vague accusations won't do.
                   </p>
                 </div>
-                <div className="rounded-xl border border-neutral-200 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900/30 p-5">
-                  <h3 className="font-medium text-neutral-800 dark:text-neutral-200">Writers</h3>
-                  <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
-                    Verify that your human-written content will not be falsely
-                    flagged by AI detectors used by publishers, clients, or
-                    search engines. Protect your reputation and prove
-                    originality.
+                <div className="bg-white p-5 dark:bg-neutral-950">
+                  <h3 className="text-sm font-medium text-neutral-900 dark:text-neutral-100">Writers</h3>
+                  <p className="mt-1.5 text-sm text-neutral-500 dark:text-neutral-400">
+                    Identify which passages trigger false positives so you
+                    can revise before an editor raises the question.
                   </p>
                 </div>
-                <div className="rounded-xl border border-neutral-200 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900/30 p-5">
-                  <h3 className="font-medium text-neutral-800 dark:text-neutral-200">Publishers</h3>
-                  <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
-                    Screen submitted articles, guest posts, and freelance
-                    content for AI generation before publishing. Maintain
-                    editorial standards and reader trust.
+                <div className="bg-white p-5 dark:bg-neutral-950">
+                  <h3 className="text-sm font-medium text-neutral-900 dark:text-neutral-100">Publishers</h3>
+                  <p className="mt-1.5 text-sm text-neutral-500 dark:text-neutral-400">
+                    Screen freelance and guest submissions. A quicker first
+                    pass than a manual read.
                   </p>
                 </div>
               </div>
@@ -417,58 +390,54 @@ export default function AiDetectorPage() {
               <h2 className="text-2xl font-semibold tracking-tight">
                 How we compare
               </h2>
-              <div className="mt-6 overflow-x-auto">
+              <div className="mt-6 overflow-x-auto rounded-xl border border-neutral-200 dark:border-neutral-800">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-neutral-200 dark:border-neutral-800 text-left">
-                      <th className="pb-3 pr-4 font-medium text-neutral-700 dark:text-neutral-300">
+                    <tr className="border-b border-neutral-200 dark:border-neutral-800 text-left bg-neutral-50 dark:bg-neutral-900/50">
+                      <th className="px-5 py-3 font-medium text-neutral-700 dark:text-neutral-300">
                         Feature
                       </th>
-                      <th className="pb-3 pr-4 font-medium text-neutral-700 dark:text-neutral-300">
+                      <th className="px-5 py-3 font-medium text-neutral-900 dark:text-neutral-100">
                         tryai.tools
                       </th>
-                      <th className="pb-3 pr-4 font-medium text-neutral-500 dark:text-neutral-400">
+                      <th className="px-5 py-3 font-medium text-neutral-500 dark:text-neutral-400">
                         ZeroGPT
                       </th>
-                      <th className="pb-3 font-medium text-neutral-500 dark:text-neutral-400">
+                      <th className="px-5 py-3 font-medium text-neutral-500 dark:text-neutral-400">
                         GPTZero
                       </th>
                     </tr>
                   </thead>
                   <tbody className="text-neutral-500 dark:text-neutral-400">
-                    <tr className="border-b border-neutral-200/50 dark:border-neutral-800/50">
-                      <td className="py-3 pr-4">
-                        Sentence-level highlighting
-                      </td>
-                      <td className="py-3 pr-4 text-emerald-400">Yes</td>
-                      <td className="py-3 pr-4">Partial</td>
-                      <td className="py-3">Yes</td>
+                    <tr className="border-b border-neutral-200/60 dark:border-neutral-800/60">
+                      <td className="px-5 py-3">Sentence highlighting</td>
+                      <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">Yes</td>
+                      <td className="px-5 py-3">Partial</td>
+                      <td className="px-5 py-3">Yes</td>
                     </tr>
-                    <tr className="border-b border-neutral-200/50 dark:border-neutral-800/50">
-                      <td className="py-3 pr-4">Reasoning explanation</td>
-                      <td className="py-3 pr-4 text-emerald-400">Detailed</td>
-                      <td className="py-3 pr-4">No</td>
-                      <td className="py-3">Basic</td>
+                    <tr className="border-b border-neutral-200/60 dark:border-neutral-800/60">
+                      <td className="px-5 py-3">Reasoning</td>
+                      <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">Detailed</td>
+                      <td className="px-5 py-3">No</td>
+                      <td className="px-5 py-3">Basic</td>
                     </tr>
-                    <tr className="border-b border-neutral-200/50 dark:border-neutral-800/50">
-                      <td className="py-3 pr-4">Pattern detection</td>
-                      <td className="py-3 pr-4 text-emerald-400">
-                        7+ heuristics + AI
-                      </td>
-                      <td className="py-3 pr-4">AI only</td>
-                      <td className="py-3">AI only</td>
+                    <tr className="border-b border-neutral-200/60 dark:border-neutral-800/60">
+                      <td className="px-5 py-3">Detection method</td>
+                      <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">7 heuristics + AI</td>
+                      <td className="px-5 py-3">AI only</td>
+                      <td className="px-5 py-3">AI only</td>
                     </tr>
-                    <tr className="border-b border-neutral-200/50 dark:border-neutral-800/50">
-                      <td className="py-3 pr-4">Free scans per day</td>
-                      <td className="py-3 pr-4 text-emerald-400">5</td>
-                      <td className="py-3 pr-4">Unlimited</td>
-                      <td className="py-3">3</td>
+                    <tr className="border-b border-neutral-200/60 dark:border-neutral-800/60">
+                      <td className="px-5 py-3">Free daily scans</td>
+                      <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">5</td>
+                      <td className="px-5 py-3">Unlimited</td>
+                      <td className="px-5 py-3">3</td>
                     </tr>
                     <tr>
-                      <td className="py-3 pr-4">Sign-up required</td>
-                      <td className="py-3 pr-4 text-emerald-400">No</td>
-                      <td className="py-3 pr-4">No</td>
-                      <td className="py-3">Yes (for full)</td>
+                      <td className="px-5 py-3">Sign-up needed</td>
+                      <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">No</td>
+                      <td className="px-5 py-3">No</td>
+                      <td className="px-5 py-3">Yes (full)</td>
                     </tr>
                   </tbody>
                 </table>
@@ -480,16 +449,13 @@ export default function AiDetectorPage() {
               <h2 className="text-2xl font-semibold tracking-tight">
                 Frequently asked questions
               </h2>
-              <div className="mt-6 space-y-6">
+              <div className="mt-6 divide-y divide-neutral-200 rounded-xl border border-neutral-200 dark:divide-neutral-800 dark:border-neutral-800">
                 {FAQ_ITEMS.map((item, i) => (
-                  <details
-                    key={i}
-                    className="group rounded-lg border border-neutral-200 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900/30"
-                  >
-                    <summary className="cursor-pointer list-none px-5 py-4 text-neutral-800 dark:text-neutral-200 font-medium flex items-center justify-between">
+                  <details key={i} className="group">
+                    <summary className="cursor-pointer list-none px-5 py-4 text-sm text-neutral-800 dark:text-neutral-200 font-medium flex items-center justify-between">
                       {item.question}
-                      <span className="ml-2 text-neutral-500 group-open:rotate-180 transition-transform duration-200">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <span className="ml-4 shrink-0 text-neutral-400 dark:text-neutral-500 group-open:rotate-180 transition-transform duration-200">
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                           <path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       </span>

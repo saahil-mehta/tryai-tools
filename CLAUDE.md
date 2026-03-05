@@ -67,9 +67,55 @@ Do not build tools that require ongoing external API dependencies or real-time d
 - **Small increments** — one tool, deploy, measure, iterate
 - **No hacky or fragile approaches** — question if a better method exists
 - **Boring is beautiful** — tools don't need to be novel; proven demand + better design + better SEO = money
-- **Design is a competitive advantage** — most utility tools look terrible; a polished, premium UI builds trust, increases session time, and earns more ad impressions
+- **Design is a competitive advantage** — see the dedicated Design Language section below; every UI decision must follow it
 - **Content from day one** — start writing SEO content (comparison pages, blog posts, FAQ pages) before the tool is even finished; the longer content is live, the sooner it ranks
 - **Build trust signals early** — pursue backlinks, reviews (Trustpilot, Product Hunt), and structured data with ratings from the start; social proof accelerates ranking
+
+## Design Language (IMPORTANT — MUST FOLLOW)
+
+Most utility tools look terrible. A polished, premium UI builds trust, increases session time, and earns more ad impressions. Design is not decoration — it is the product.
+
+### Core philosophy
+
+> "Perfection is achieved not when there is nothing more to add, but when there is nothing left to take away." — Antoine de Saint-Exupery
+
+The front end is not a contest of how much you can squeeze onto it. It is a contest of how much you can remove while still letting the user achieve their goal. Users are hunters seeking a task to complete, not tourists wandering an interface. Every vague element in their path is friction that leads to abandonment.
+
+### The aesthetic: Vercel-grade minimalism
+
+Our reference point is Vercel, Linear, and Stripe. The design language is:
+
+- **Monochrome palette** — neutral-900/white in light mode, neutral-100/neutral-950 in dark mode. Colour appears only when it carries functional meaning (status indicators, success/error states, score thresholds in results). Never decorative.
+- **Typography does the work** — hierarchy comes from font weight, size, and spacing. Bold headings, muted secondary text, generous line height. No icons needed to communicate structure.
+- **Generous whitespace** — sections breathe. Cramped layouts signal low quality. When in doubt, add more space, not more content.
+- **Subtle borders** — thin (1px), low-contrast borders (neutral-200 light / neutral-800 dark). Rounded corners (rounded-xl for cards, rounded-lg for smaller elements). No heavy outlines or drop shadows.
+- **Gap-px grid pattern** — for structured content blocks (steps, use-case cards), use the Vercel signature: `gap-px` with a coloured container background showing through as 1px dividers between cells. Each cell gets the page background colour.
+- **Contained tables** — wrap in a rounded border, add a subtle header background (bg-neutral-50 / bg-neutral-900), consistent px-5 cell padding.
+
+### What to do
+
+- Let the tool widget be the hero — it should dominate above the fold
+- Use `dt`/`dd` definition lists or clean 2-column grids for feature lists
+- Use `divide-y` inside a single container for FAQ/accordion lists
+- Trim copy ruthlessly — say it in one sentence, not three
+- Use text weight (font-medium, font-semibold) and text colour (neutral-900 vs neutral-500) to create hierarchy
+- SEO content below the tool should be scannable: short paragraphs, clear headings, tight descriptions
+
+### What NEVER to do (anti-patterns)
+
+These are the hallmarks of AI-generated design slop. They are banned:
+
+- **Icon-bombing** — coloured icon boxes (bg-blue-500/10 with an SVG) on every card, step, or feature. Icons should be rare and functional, not decorative filler.
+- **Rainbow colour-coding** — giving every section its own accent colour (blue for step 1, violet for step 2, amber for step 3). This is the single biggest AI slop tell.
+- **Inline SVG decoration** — scattering hand-coded SVG icons throughout markup to look "visual". If you need icons, use a proper icon library sparingly.
+- **Coloured comparison boxes** — red-tinted "AI writing" vs green-tinted "Human writing" side-by-side cards. Communicate through words and layout, not colour gimmicks.
+- **Feature grids with icon circles** — 6-up grids where every cell has a coloured circle with an icon and two lines of text. This is the default output of every AI coding tool. Do not do it.
+- **Excessive border-radius mixing** — mixing rounded-full pills, rounded-xl cards, and rounded-lg buttons on the same page without consistency.
+- **Gratuitous colour in tables** — green checkmarks and red crosses in comparison tables. Use plain text ("Yes", "No", "Partial") with text colour hierarchy (neutral-900 for our column, neutral-500 for competitors).
+
+### The test
+
+Before shipping any UI, ask: "Would this look at home on vercel.com?" If the answer is no, strip it back until it does. When in doubt, remove. The best interface is the one that disappears — the user gets their result without ever thinking about the design.
 
 ## SEO Playbook
 
@@ -125,10 +171,29 @@ Types: feat, fix, docs, style, refactor, perf, test, chore, ci, build, revert
 
 ## Output Policy
 
+- Site content must not contain em dashes, only simple human language. No formulaic AI-like language.
 - UK English spelling (primary market)
 - No emojis in code or commits
 - No unnecessary documentation
 - Always provide honest critical assessment under CRITICAL_ASSESSMENT
+
+### Copy voice (IMPORTANT)
+
+All site-facing copy must read like a confident human wrote it, not a language model. The copy should pass our own AI detector with a low AI score. Specifically:
+
+- **Use contractions** - "don't", "won't", "it's", "we've", "you'll". Always. Avoiding contractions is the single biggest AI tell.
+- **Vary sentence length wildly** - a four-word sentence followed by a long one. Never uniform.
+- **Have opinions** - "we thought that was a bit rubbish" beats "this can be suboptimal". Take a stance.
+- **Start sentences with And, But, So** - real people do this constantly.
+- **Use informal transitions** - "Thing is,", "Look,", "That said,". Not "However," and "Furthermore,".
+- **Be specific, not generic** - "your lecturer flags it" beats "educational institutions may identify it".
+- **No hedging** - don't say "may help ensure" when you mean "helps". Drop "potentially", "can vary", "it is important to note that".
+- **No em dashes** - use commas, full stops, or just restructure the sentence.
+- **No triple lists** - AI loves listing three things. If you've written three items in a row, add a fourth or cut to two.
+- **No "our detector"** - just say "we", "it", or "the tool". "Our X does Y" is an AI pattern.
+- **Address the reader directly** - "you", "your", not "users" or "one".
+
+The test: paste the copy into the AI detector. If it scores above 50% AI, rewrite it.
 
 ## Critical
 
