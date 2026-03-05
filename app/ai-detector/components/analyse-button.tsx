@@ -5,6 +5,7 @@ import type { AnalysisPhase } from "@/lib/ai-detector/types";
 interface AnalyseButtonProps {
   phase: AnalysisPhase;
   canAnalyse: boolean;
+  hasResult: boolean;
   onAnalyse: () => void;
   onReset: () => void;
   onCopyResults: () => void;
@@ -14,6 +15,7 @@ interface AnalyseButtonProps {
 export function AnalyseButton({
   phase,
   canAnalyse,
+  hasResult,
   onAnalyse,
   onReset,
   onCopyResults,
@@ -41,41 +43,24 @@ export function AnalyseButton({
   }
 
   if (phase === "complete" || phase === "error") {
+    const btnClass = `
+      rounded-lg bg-neutral-900 dark:bg-white
+      px-4 py-2 text-sm font-medium text-white dark:text-neutral-950
+      hover:bg-neutral-700 dark:hover:bg-neutral-300
+      active:scale-[0.97] transition-all duration-150
+    `;
+
     return (
       <div className="flex flex-wrap items-center justify-center gap-3">
-        <button
-          onClick={onReset}
-          className="
-            rounded-lg border border-neutral-200 bg-neutral-100
-            dark:border-neutral-700 dark:bg-neutral-800
-            px-5 py-2.5 text-sm font-medium text-neutral-700 dark:text-neutral-200
-            hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors duration-200
-          "
-        >
+        <button onClick={onReset} className={btnClass}>
           Analyse again
         </button>
-        {phase === "complete" && (
+        {phase === "complete" && hasResult && (
           <>
-            <button
-              onClick={onCopyResults}
-              className="
-                rounded-lg border border-neutral-200 bg-neutral-100
-                dark:border-neutral-700 dark:bg-neutral-800
-                px-5 py-2.5 text-sm font-medium text-neutral-500 dark:text-neutral-400
-                hover:bg-neutral-200 dark:hover:bg-neutral-700 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors duration-200
-              "
-            >
+            <button onClick={onCopyResults} className={btnClass}>
               Copy report
             </button>
-            <button
-              onClick={onDownload}
-              className="
-                rounded-lg border border-neutral-200 bg-neutral-100
-                dark:border-neutral-700 dark:bg-neutral-800
-                px-5 py-2.5 text-sm font-medium text-neutral-500 dark:text-neutral-400
-                hover:bg-neutral-200 dark:hover:bg-neutral-700 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors duration-200
-              "
-            >
+            <button onClick={onDownload} className={btnClass}>
               Download PDF
             </button>
           </>
@@ -84,17 +69,9 @@ export function AnalyseButton({
     );
   }
 
-  if (phase === "analysing") {
-    return (
-      <div className="flex flex-col items-center gap-3">
-        <div className="h-1.5 w-full max-w-md overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800">
-          <div className="h-full w-2/3 animate-pulse rounded-full bg-blue-400" />
-        </div>
-        <p className="animate-pulse text-sm text-neutral-500 dark:text-neutral-400">
-          Analysing...
-        </p>
-      </div>
-    );
+  // Hide button while analysing/finishing — progress bar takes over
+  if (phase === "analysing" || phase === "finishing") {
+    return null;
   }
 
   return (
@@ -104,8 +81,9 @@ export function AnalyseButton({
       className="
         relative w-full max-w-md rounded-xl bg-neutral-900 dark:bg-white px-8 py-3.5
         text-base font-semibold text-white dark:text-neutral-950
-        hover:bg-neutral-800 dark:hover:bg-neutral-200 disabled:cursor-not-allowed disabled:opacity-40
-        transition-all duration-200
+        hover:bg-neutral-700 dark:hover:bg-neutral-300
+        active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-40
+        transition-all duration-150
         focus:outline-none focus:ring-2 focus:ring-neutral-900/50 dark:focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-neutral-950
       "
     >
