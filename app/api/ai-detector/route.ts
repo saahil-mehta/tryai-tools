@@ -1,27 +1,46 @@
 import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
+import { Redis } from "@upstash/redis";
 import { NextRequest, NextResponse } from "next/server";
 import {
   SYSTEM_PROMPT,
   buildAnalysisPrompt,
 } from "@/lib/ai-detector/prompt";
-import type { HeuristicResult } from "@/lib/ai-detector/types";
+import type { HeuristicResult, TextType } from "@/lib/ai-detector/types";
 
-// Simple in-memory rate limiter (resets on server restart)
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-const RATE_LIMIT = 20; // requests per window
-const RATE_WINDOW = 60 * 60 * 1000; // 1 hour
+const DAILY_CHAR_LIMIT = 1_000_000; // 1M chars/day per IP
+const MAX_TEXT_LENGTH = 50_000;      // 50K chars per analysis
 
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW });
-    return false;
+// Redis client — null when env vars are missing (local dev)
+function getRedis(): Redis | null {
+  if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
+    return null;
   }
+  return Redis.fromEnv();
+}
 
-  entry.count++;
-  return entry.count > RATE_LIMIT;
+async function getCharBudget(
+  redis: Redis | null,
+  ip: string,
+): Promise<{ used: number; limit: number } | null> {
+  if (!redis) return null;
+  const today = new Date().toISOString().slice(0, 10);
+  const key = `ai-detector:${ip}:${today}`;
+  const used = (await redis.get<number>(key)) ?? 0;
+  return { used, limit: DAILY_CHAR_LIMIT };
+}
+
+async function recordCharUsage(
+  redis: Redis | null,
+  ip: string,
+  chars: number,
+): Promise<{ used: number; limit: number } | null> {
+  if (!redis) return null;
+  const today = new Date().toISOString().slice(0, 10);
+  const key = `ai-detector:${ip}:${today}`;
+  const current = (await redis.get<number>(key)) ?? 0;
+  const newTotal = current + chars;
+  await redis.set(key, newTotal, { ex: 86400 });
+  return { used: newTotal, limit: DAILY_CHAR_LIMIT };
 }
 
 function getClientIp(request: NextRequest): string {
@@ -42,6 +61,12 @@ function isValidHeuristics(h: unknown): h is HeuristicResult {
   );
 }
 
+const VALID_TEXT_TYPES = new Set(["prose", "structured", "mixed"]);
+
+function isValidTextType(t: unknown): t is TextType {
+  return typeof t === "string" && VALID_TEXT_TYPES.has(t);
+}
+
 export async function POST(request: NextRequest) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
@@ -52,21 +77,19 @@ export async function POST(request: NextRequest) {
   }
 
   const ip = getClientIp(request);
-  if (isRateLimited(ip)) {
-    return NextResponse.json(
-      { error: "Rate limit exceeded. Please try again later." },
-      { status: 429 },
-    );
-  }
+  const redis = getRedis();
 
-  let body: { text?: string; heuristics?: unknown };
+  // Check character budget
+  const budget = await getCharBudget(redis, ip);
+
+  let body: { text?: string; heuristics?: unknown; textType?: unknown };
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { text, heuristics } = body;
+  const { text, heuristics, textType: rawTextType } = body;
 
   if (!text || typeof text !== "string") {
     return NextResponse.json(
@@ -82,6 +105,8 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  const textType: TextType = isValidTextType(rawTextType) ? rawTextType : "prose";
+
   const wordCount = text.trim().split(/\s+/).length;
   if (wordCount < 50) {
     return NextResponse.json(
@@ -90,10 +115,18 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  if (text.length > 15000) {
+  if (text.length > MAX_TEXT_LENGTH) {
     return NextResponse.json(
-      { error: "Text must be under 15,000 characters" },
+      { error: `Text must be under ${MAX_TEXT_LENGTH.toLocaleString()} characters` },
       { status: 400 },
+    );
+  }
+
+  // Enforce character budget
+  if (budget && budget.used + text.length > DAILY_CHAR_LIMIT) {
+    return NextResponse.json(
+      { error: "Daily character limit reached", quota: budget },
+      { status: 429 },
     );
   }
 
@@ -142,6 +175,12 @@ export async function POST(request: NextRequest) {
               items: { type: SchemaType.STRING },
               description: "List of specific patterns detected",
             },
+            textType: {
+              type: SchemaType.STRING,
+              format: "enum",
+              enum: ["prose", "structured", "mixed"],
+              description: "Classification of the text type",
+            },
           },
           required: [
             "verdict",
@@ -149,18 +188,22 @@ export async function POST(request: NextRequest) {
             "sentences",
             "reasoning",
             "patterns",
+            "textType",
           ],
         },
       },
     });
 
     const result = await model.generateContent(
-      buildAnalysisPrompt(text, heuristics),
+      buildAnalysisPrompt(text, heuristics, textType),
     );
     const responseText = result.response.text();
     const parsed = JSON.parse(responseText);
 
-    return NextResponse.json(parsed);
+    // Record usage after successful analysis
+    const quota = await recordCharUsage(redis, ip, text.length);
+
+    return NextResponse.json({ ...parsed, quota });
   } catch (error) {
     console.error("Gemini API error:", error);
     return NextResponse.json(
