@@ -97,6 +97,7 @@ export function AiDetectorTool() {
   }, []);
 
   const handleReset = useCallback(() => {
+    setText("");
     setPhase("idle");
     setResult(null);
     setError(null);

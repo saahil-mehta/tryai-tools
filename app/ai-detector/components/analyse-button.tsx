@@ -53,7 +53,7 @@ export function AnalyseButton({
     return (
       <div className="flex flex-wrap items-center justify-center gap-3">
         <button onClick={onReset} className={btnClass}>
-          Analyse again
+          Start over
         </button>
         {phase === "complete" && hasResult && (
           <>

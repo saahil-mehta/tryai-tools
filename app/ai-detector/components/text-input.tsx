@@ -37,6 +37,8 @@ export function TextInput({ value, onChange, disabled }: TextInputProps) {
           focus:border-neutral-400 dark:focus:border-neutral-600 focus:outline-none focus:ring-1 focus:ring-neutral-400 dark:focus:ring-neutral-600
           disabled:cursor-not-allowed disabled:opacity-50
           transition-all duration-300
+          [scrollbar-color:theme(color.neutral.300)_transparent]
+          dark:[scrollbar-color:theme(color.neutral.700)_transparent]
         `}
       />
       <div className="mt-3 flex items-center justify-between text-sm">
