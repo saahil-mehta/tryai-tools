@@ -170,8 +170,22 @@ export async function POST(request: NextRequest) {
             },
             patterns: {
               type: SchemaType.ARRAY,
-              items: { type: SchemaType.STRING },
-              description: "List of specific patterns detected",
+              items: {
+                type: SchemaType.OBJECT,
+                properties: {
+                  pattern: {
+                    type: SchemaType.STRING,
+                    description: "Short label for the pattern",
+                  },
+                  explanation: {
+                    type: SchemaType.STRING,
+                    description:
+                      "One sentence explaining why this pattern matters",
+                  },
+                },
+                required: ["pattern", "explanation"],
+              },
+              description: "Specific patterns detected with explanations",
             },
             textType: {
               type: SchemaType.STRING,

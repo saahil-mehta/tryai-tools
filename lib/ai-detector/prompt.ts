@@ -68,7 +68,7 @@ Classify the text type as "prose", "structured", or "mixed" in the textType fiel
 
 In the reasoning field, write a detailed analytical paragraph that references specific evidence from both the text and the heuristic scores. Explain which patterns you observed, cite particular phrases or structural choices, and note how the statistical indicators support or contradict your reading. This should be thorough enough to serve as a standalone report.
 
-In the patterns field, list specific patterns you detected (e.g., "no contractions used", "uniform paragraph structure", "lists in groups of 3").`;
+In the patterns field, return objects with a short "pattern" label and a one-sentence "explanation" of why it matters. Example: { "pattern": "no contractions", "explanation": "The text avoids don't, won't, can't throughout, which is typical of LLM output that defaults to formal register." }.`;
 
 export function buildAnalysisPrompt(
   text: string,
@@ -133,8 +133,23 @@ export const RESPONSE_SCHEMA = {
     },
     patterns: {
       type: "array" as const,
-      items: { type: "string" as const },
-      description: "List of specific patterns detected",
+      items: {
+        type: "object" as const,
+        properties: {
+          pattern: {
+            type: "string" as const,
+            description:
+              "Short label for the pattern (e.g. 'no contractions used')",
+          },
+          explanation: {
+            type: "string" as const,
+            description:
+              "One sentence explaining why this pattern matters for AI detection",
+          },
+        },
+        required: ["pattern", "explanation"],
+      },
+      description: "Specific patterns detected with explanations",
     },
     textType: {
       type: "string" as const,

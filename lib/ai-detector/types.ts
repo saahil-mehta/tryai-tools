@@ -26,12 +26,17 @@ export interface SentenceVerdict {
   confidence: number; // 0-100
 }
 
+export interface DetectedPattern {
+  pattern: string;
+  explanation: string;
+}
+
 export interface AnalysisResult {
   verdict: "Likely AI" | "Likely Human" | "Mixed";
   confidence: number; // 0-100
   sentences: SentenceVerdict[];
   reasoning: string;
-  patterns: string[];
+  patterns: DetectedPattern[];
   heuristics: HeuristicResult;
   textType: TextType;
 }
@@ -39,6 +44,7 @@ export interface AnalysisResult {
 export type AnalysisPhase =
   | "idle"
   | "analysing"
+  | "finishing"
   | "complete"
   | "error"
   | "rate-limited";

@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/tooltip";
 import type {
   AnalysisResult,
+  DetectedPattern,
   HeuristicMetric,
   SentenceVerdictLabel,
 } from "@/lib/ai-detector/types";
@@ -290,25 +291,29 @@ function StatisticalIndicators({ metrics }: { metrics: HeuristicMetric[] }) {
   );
 }
 
-function DetectedPatterns({ patterns }: { patterns: string[] }) {
+function DetectedPatterns({ patterns }: { patterns: DetectedPattern[] }) {
   if (patterns.length === 0) return null;
 
   return (
-    <div className="bg-white p-6 dark:bg-neutral-950">
-      <h3 className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
-        Detected patterns
-      </h3>
-      <div className="mt-3 flex flex-wrap gap-2">
-        {patterns.map((pattern, i) => (
-          <span
-            key={i}
-            className="rounded-full border border-neutral-200 bg-neutral-100 px-3 py-1 text-xs text-neutral-600 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
-          >
-            {pattern}
-          </span>
-        ))}
+    <TooltipProvider delayDuration={200}>
+      <div className="bg-white p-6 dark:bg-neutral-950">
+        <h3 className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+          Detected patterns
+        </h3>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {patterns.map((p, i) => (
+            <Tooltip key={i}>
+              <TooltipTrigger asChild>
+                <span className="cursor-default rounded-full border border-neutral-200 bg-neutral-100 px-3 py-1 text-xs text-neutral-600 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
+                  {p.pattern}
+                </span>
+              </TooltipTrigger>
+              <TooltipContent side="top">{p.explanation}</TooltipContent>
+            </Tooltip>
+          ))}
+        </div>
       </div>
-    </div>
+    </TooltipProvider>
   );
 }
 
@@ -665,21 +670,30 @@ export function PdfReport({ result, reportRef }: PdfReportProps) {
             >
               Detected patterns
             </p>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+            >
               {result.patterns.map((p, i) => (
-                <span
-                  key={i}
-                  style={{
-                    border: "1px solid #e5e5e5",
-                    borderRadius: "999px",
-                    padding: "4px 12px",
-                    fontSize: "12px",
-                    color: "#525252",
-                    backgroundColor: "#f5f5f5",
-                  }}
-                >
-                  {p}
-                </span>
+                <div key={i}>
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: 500,
+                      color: "#525252",
+                    }}
+                  >
+                    {p.pattern}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "11px",
+                      color: "#a3a3a3",
+                      marginLeft: "6px",
+                    }}
+                  >
+                    {p.explanation}
+                  </span>
+                </div>
               ))}
             </div>
           </div>
