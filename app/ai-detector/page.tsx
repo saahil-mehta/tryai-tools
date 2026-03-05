@@ -5,11 +5,11 @@ import { AiDetectorTool } from "./components/ai-detector-tool";
 
 export const metadata: Metadata = {
   title:
-    "AI Content Detector — Free Online AI Text Checker for ChatGPT, Claude & Gemini | tryai.tools",
+    "AI Content Detector - Free Online AI Text Checker for ChatGPT, Claude & Gemini | tryai.tools",
   description:
-    "Free AI content detector — paste your text for instant analysis with sentence-level highlighting. Detect ChatGPT, Claude, and Gemini content in seconds.",
+    "Free AI content detector. Paste your text for instant analysis with sentence-level highlighting. Detect ChatGPT, Claude, and Gemini content in seconds.",
   openGraph: {
-    title: "AI Content Detector — Free Online AI Text Checker | tryai.tools",
+    title: "AI Content Detector - Free Online AI Text Checker | tryai.tools",
     description:
       "Paste your text for instant AI detection with sentence-level highlighting. Detect ChatGPT, Claude, and Gemini content in seconds.",
     url: "https://tryai.tools/ai-detector",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "AI Content Detector — Free AI Text Checker | tryai.tools",
+    title: "AI Content Detector - Free AI Text Checker | tryai.tools",
     description:
       "Paste your text for instant AI detection with sentence-level highlighting.",
   },
@@ -490,7 +490,7 @@ export default function AiDetectorPage() {
               >
                 tryai.tools
               </Link>{" "}
-              — AI tools, simplified.
+              - AI tools, simplified.
             </p>
           </footer>
         </div>
