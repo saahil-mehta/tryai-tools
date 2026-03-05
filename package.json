@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "@radix-ui/react-tooltip": "^1.2.8",
     "html2canvas-pro": "^2.0.2",
     "next": "16.1.6",
     "pdf-lib": "^1.17.1",

@@ -1,6 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import type {
   AnalysisResult,
   HeuristicMetric,
@@ -202,27 +208,44 @@ function SentenceAnalysis({
   );
 }
 
+function signalLabel(score: number): string {
+  if (score >= 70) return "Strong AI signal";
+  if (score >= 40) return "Moderate";
+  if (score >= 15) return "Weak signal";
+  return "No signal";
+}
+
 function MetricRow({ metric, index }: { metric: HeuristicMetric; index: number }) {
   return (
-    <div className="flex items-center gap-4 px-5 py-3">
-      <span className="min-w-0 flex-1 truncate text-sm text-neutral-600 dark:text-neutral-400">
-        {metric.name}
-      </span>
-      <span
-        className={`w-10 text-right text-sm font-semibold tabular-nums ${scoreColour(metric.score)}`}
-      >
-        <AnimatedCounter target={Math.round(metric.score)} delay={200 + index * 80} />
-      </span>
-      <div className="h-1.5 w-24 shrink-0 overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800">
-        <div
-          className={`h-full rounded-full ${barColour(metric.score)} transition-all duration-700 ease-out`}
-          style={{
-            width: `${metric.score}%`,
-            transitionDelay: `${300 + index * 80}ms`,
-          }}
-        />
-      </div>
-    </div>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <div className="flex cursor-default items-center gap-4 px-5 py-3">
+          <span className="min-w-0 flex-1 text-sm text-neutral-600 dark:text-neutral-400">
+            <span className="truncate">{metric.name}</span>
+            <span className={`ml-2 text-xs ${scoreColour(metric.score)} opacity-70`}>
+              {signalLabel(metric.score)}
+            </span>
+          </span>
+          <span
+            className={`w-10 text-right text-sm font-semibold tabular-nums ${scoreColour(metric.score)}`}
+          >
+            <AnimatedCounter target={Math.round(metric.score)} delay={200 + index * 80} />
+          </span>
+          <div className="h-1.5 w-24 shrink-0 overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800">
+            <div
+              className={`h-full rounded-full ${barColour(metric.score)} transition-all duration-700 ease-out`}
+              style={{
+                width: `${metric.score}%`,
+                transitionDelay: `${300 + index * 80}ms`,
+              }}
+            />
+          </div>
+        </div>
+      </TooltipTrigger>
+      <TooltipContent side="top">
+        {metric.description}
+      </TooltipContent>
+    </Tooltip>
   );
 }
 
@@ -232,8 +255,9 @@ function StatisticalIndicators({
   metrics: HeuristicMetric[];
 }) {
   return (
-    <div className="bg-white dark:bg-neutral-950">
-      <details className="group" open>
+    <TooltipProvider delayDuration={200}>
+      <div className="bg-white dark:bg-neutral-950">
+        <details className="group" open>
         <summary className="cursor-pointer list-none px-6 py-4 text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500 flex items-center justify-between">
           Statistical indicators
           <span className="text-neutral-400 dark:text-neutral-500 group-open:rotate-180 transition-transform duration-200">
@@ -253,13 +277,17 @@ function StatisticalIndicators({
             </svg>
           </span>
         </summary>
+        <p className="px-6 pb-2 text-xs text-neutral-400 dark:text-neutral-500">
+          Each score is 0-100. Higher means more likely AI-generated. Hover a row to see what it measures.
+        </p>
         <div className="divide-y divide-neutral-100 dark:divide-neutral-800/50">
           {metrics.map((metric, i) => (
             <MetricRow key={metric.key} metric={metric} index={i} />
           ))}
         </div>
-      </details>
-    </div>
+        </details>
+      </div>
+    </TooltipProvider>
   );
 }
 
@@ -533,14 +561,20 @@ export function PdfReport({ result, reportRef }: PdfReportProps) {
               padding: "6px 0",
             }}
           >
-            <span
-              style={{
-                flex: 1,
-                fontSize: "13px",
-                color: "#525252",
-              }}
-            >
-              {m.name}
+            <span style={{ flex: 1 }}>
+              <span style={{ fontSize: "13px", color: "#525252" }}>
+                {m.name}
+              </span>
+              <span
+                style={{
+                  marginLeft: "8px",
+                  fontSize: "11px",
+                  color: barColourStatic(m.score),
+                  opacity: 0.8,
+                }}
+              >
+                {signalLabel(m.score)}
+              </span>
             </span>
             <span
               style={{
