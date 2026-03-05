@@ -8,12 +8,8 @@ interface AnalyseButtonProps {
   onAnalyse: () => void;
   onReset: () => void;
   onCopyResults: () => void;
+  onDownload: () => void;
 }
-
-const PHASE_LABELS: Partial<Record<AnalysisPhase, string>> = {
-  "analysing-heuristics": "Scanning writing patterns...",
-  "analysing-deep": "Running deep analysis...",
-};
 
 export function AnalyseButton({
   phase,
@@ -21,18 +17,16 @@ export function AnalyseButton({
   onAnalyse,
   onReset,
   onCopyResults,
+  onDownload,
 }: AnalyseButtonProps) {
-  const isAnalysing =
-    phase === "analysing-heuristics" || phase === "analysing-deep";
-
   if (phase === "rate-limited") {
     return (
       <div className="flex flex-col items-center gap-3">
         <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 px-6 py-4 text-center">
-          <p className="font-medium text-amber-300">
+          <p className="font-medium text-amber-600 dark:text-amber-300">
             You&apos;ve used all 5 free scans today
           </p>
-          <p className="mt-1 text-sm text-amber-300/70">
+          <p className="mt-1 text-sm text-amber-600/70 dark:text-amber-300/70">
             Sign up for 5 more daily scans — coming soon
           </p>
         </div>
@@ -46,9 +40,9 @@ export function AnalyseButton({
     );
   }
 
-  if (phase === "complete") {
+  if (phase === "complete" || phase === "error") {
     return (
-      <div className="flex items-center justify-center gap-3">
+      <div className="flex flex-wrap items-center justify-center gap-3">
         <button
           onClick={onReset}
           className="
@@ -60,36 +54,44 @@ export function AnalyseButton({
         >
           Analyse again
         </button>
-        <button
-          onClick={onCopyResults}
-          className="
-            rounded-lg border border-neutral-200 bg-neutral-100
-            dark:border-neutral-700 dark:bg-neutral-800
-            px-5 py-2.5 text-sm font-medium text-neutral-500 dark:text-neutral-400
-            hover:bg-neutral-200 dark:hover:bg-neutral-700 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors duration-200
-          "
-        >
-          Copy results
-        </button>
+        {phase === "complete" && (
+          <>
+            <button
+              onClick={onCopyResults}
+              className="
+                rounded-lg border border-neutral-200 bg-neutral-100
+                dark:border-neutral-700 dark:bg-neutral-800
+                px-5 py-2.5 text-sm font-medium text-neutral-500 dark:text-neutral-400
+                hover:bg-neutral-200 dark:hover:bg-neutral-700 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors duration-200
+              "
+            >
+              Copy report
+            </button>
+            <button
+              onClick={onDownload}
+              className="
+                rounded-lg border border-neutral-200 bg-neutral-100
+                dark:border-neutral-700 dark:bg-neutral-800
+                px-5 py-2.5 text-sm font-medium text-neutral-500 dark:text-neutral-400
+                hover:bg-neutral-200 dark:hover:bg-neutral-700 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors duration-200
+              "
+            >
+              Download PDF
+            </button>
+          </>
+        )}
       </div>
     );
   }
 
-  if (isAnalysing) {
+  if (phase === "analysing") {
     return (
       <div className="flex flex-col items-center gap-3">
-        {/* Progress bar */}
         <div className="h-1.5 w-full max-w-md overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800">
-          <div
-            className={`
-              h-full rounded-full transition-all duration-1000 ease-out
-              ${phase === "analysing-heuristics" ? "w-1/3 bg-blue-500" : ""}
-              ${phase === "analysing-deep" ? "w-2/3 bg-blue-400 animate-pulse" : ""}
-            `}
-          />
+          <div className="h-full w-2/3 animate-pulse rounded-full bg-blue-400" />
         </div>
-        <p className="text-sm text-neutral-500 dark:text-neutral-400 animate-pulse">
-          {PHASE_LABELS[phase]}
+        <p className="animate-pulse text-sm text-neutral-500 dark:text-neutral-400">
+          Analysing...
         </p>
       </div>
     );

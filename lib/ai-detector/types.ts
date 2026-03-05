@@ -18,25 +18,18 @@ export interface SentenceVerdict {
   confidence: number; // 0-100
 }
 
-export interface DeepAnalysisResult {
+export interface AnalysisResult {
   verdict: "Likely AI" | "Likely Human" | "Mixed";
   confidence: number; // 0-100
   sentences: SentenceVerdict[];
   reasoning: string;
   patterns: string[];
+  heuristics: HeuristicResult;
 }
 
 export type AnalysisPhase =
   | "idle"
-  | "analysing-heuristics"
-  | "analysing-deep"
+  | "analysing"
   | "complete"
   | "error"
   | "rate-limited";
-
-export interface AnalysisState {
-  phase: AnalysisPhase;
-  heuristicResult: HeuristicResult | null;
-  deepResult: DeepAnalysisResult | null;
-  error: string | null;
-}
