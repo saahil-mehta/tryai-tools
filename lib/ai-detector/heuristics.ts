@@ -1,4 +1,4 @@
-import type { HeuristicMetric, HeuristicResult } from "./types";
+import type { HeuristicMetric, HeuristicResult, TextType } from "./types";
 
 // --- Helpers ---
 
@@ -260,71 +260,95 @@ export function listPatternDetection(text: string): number {
 
 // --- Main Analysis ---
 
-const METRIC_WEIGHTS: Record<string, number> = {
-  sentenceLengthVariance: 0.2,
-  vocabularyDiversity: 0.1,
-  burstiness: 0.2,
-  repeatedPhrases: 0.1,
-  negationDensity: 0.15,
-  emDashFrequency: 0.1,
-  listPatternDetection: 0.15,
+const WEIGHT_SETS: Record<TextType, Record<string, number>> = {
+  prose: {
+    sentenceLengthVariance: 0.20,
+    vocabularyDiversity: 0.10,
+    burstiness: 0.20,
+    repeatedPhrases: 0.10,
+    negationDensity: 0.15,
+    emDashFrequency: 0.10,
+    listPatternDetection: 0.15,
+  },
+  mixed: {
+    sentenceLengthVariance: 0.10,
+    vocabularyDiversity: 0.05,
+    burstiness: 0.10,
+    repeatedPhrases: 0.05,
+    negationDensity: 0.05,
+    emDashFrequency: 0.10,
+    listPatternDetection: 0.05,
+  },
+  structured: {
+    sentenceLengthVariance: 0.05,
+    vocabularyDiversity: 0.00,
+    burstiness: 0.05,
+    repeatedPhrases: 0.00,
+    negationDensity: 0.00,
+    emDashFrequency: 0.10,
+    listPatternDetection: 0.00,
+  },
 };
 
-export function analyseHeuristics(text: string): HeuristicResult {
+export function analyseHeuristics(text: string, textType: TextType = "prose"): HeuristicResult {
+  const weights = WEIGHT_SETS[textType];
+
   const metrics: HeuristicMetric[] = [
     {
       key: "sentenceLengthVariance",
       name: "Sentence Uniformity",
       score: sentenceLengthVariance(text),
-      description: "AI text tends to have very uniform sentence lengths",
+      description: "Real writing is messy. Short sentences, then long rambling ones. A score here means every sentence looks suspiciously similar in length.",
     },
     {
       key: "vocabularyDiversity",
       name: "Vocabulary Repetition",
       score: vocabularyDiversity(text),
-      description: "AI tends to reuse the same words more frequently",
+      description: "People reach for different words. LLMs get stuck in loops, recycling the same vocabulary over and over.",
     },
     {
       key: "burstiness",
       name: "Writing Burstiness",
       score: burstiness(text),
-      description:
-        "Humans write in bursts of complexity; AI is more monotone",
+      description: "You write in bursts. A quick thought, then a dense paragraph. LLM output stays flat and even throughout.",
     },
     {
       key: "repeatedPhrases",
       name: "Phrase Repetition",
       score: repeatedPhrases(text),
-      description: "AI often repeats the same multi-word phrases",
+      description: "Phrases like \"it's important to note\" or \"this allows you to\" popping up multiple times? That's a tell.",
     },
     {
       key: "negationDensity",
       name: "Negation Usage",
       score: negationDensity(text),
-      description:
-        'AI avoids negative constructions like "not" and "don\'t"',
+      description: "People say \"don't\", \"can't\", \"won't\" all the time. LLMs avoid negatives and phrase things positively instead.",
     },
     {
       key: "emDashFrequency",
       name: "Em Dash Usage",
       score: emDashFrequency(text),
-      description: "AI (especially Claude) overuses em dashes",
+      description: "Claude loves em dashes. ChatGPT uses them a lot too. If the text is littered with them, that's worth flagging.",
     },
     {
       key: "listPatternDetection",
       name: "List Patterns",
       score: listPatternDetection(text),
-      description: "AI defaults to lists in groups of 3, 6, or 9",
+      description: "Three reasons, three benefits, three steps. LLMs default to groups of three. Humans don't think in tidy trinities.",
     },
   ];
 
-  const overallScore = metrics.reduce((sum, metric) => {
-    const weight = METRIC_WEIGHTS[metric.key] || 0;
-    return sum + metric.score * weight;
+  // Normalise by the sum of active weights so zeroed-out metrics
+  // don't artificially lower the overall score
+  const weightSum = Object.values(weights).reduce((a, b) => a + b, 0);
+  const weightedSum = metrics.reduce((sum, metric) => {
+    return sum + metric.score * (weights[metric.key] || 0);
   }, 0);
+  const overallScore = weightSum > 0 ? weightedSum / weightSum : 0;
 
   return {
     metrics,
     overallScore: Math.round(overallScore),
+    textType,
   };
 }

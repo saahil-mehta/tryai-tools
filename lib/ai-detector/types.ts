@@ -1,3 +1,5 @@
+export type TextType = "prose" | "structured" | "mixed";
+
 export interface HeuristicMetric {
   key: string;
   name: string;
@@ -8,6 +10,12 @@ export interface HeuristicMetric {
 export interface HeuristicResult {
   metrics: HeuristicMetric[];
   overallScore: number; // 0-100 weighted average
+  textType: TextType;
+}
+
+export interface Quota {
+  used: number;
+  limit: number;
 }
 
 export type SentenceVerdictLabel = "ai" | "human" | "uncertain";
@@ -25,6 +33,7 @@ export interface AnalysisResult {
   reasoning: string;
   patterns: string[];
   heuristics: HeuristicResult;
+  textType: TextType;
 }
 
 export type AnalysisPhase =
