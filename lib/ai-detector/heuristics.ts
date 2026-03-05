@@ -252,8 +252,7 @@ export function listPatternDetection(text: string): number {
   let score = 0;
   score += normalise(listDensity, 0.1, 0.5) * 0.4;
   score += normalise(inlineDensity, 0.5, 3) * 0.3;
-  score +=
-    (totalGroups > 0 ? (multiplesOf3 / totalGroups) * 100 : 0) * 0.3;
+  score += (totalGroups > 0 ? (multiplesOf3 / totalGroups) * 100 : 0) * 0.3;
 
   return clamp(score, 0, 100);
 }
@@ -262,35 +261,38 @@ export function listPatternDetection(text: string): number {
 
 const WEIGHT_SETS: Record<TextType, Record<string, number>> = {
   prose: {
-    sentenceLengthVariance: 0.20,
-    vocabularyDiversity: 0.10,
-    burstiness: 0.20,
-    repeatedPhrases: 0.10,
+    sentenceLengthVariance: 0.2,
+    vocabularyDiversity: 0.1,
+    burstiness: 0.2,
+    repeatedPhrases: 0.1,
     negationDensity: 0.15,
-    emDashFrequency: 0.10,
+    emDashFrequency: 0.1,
     listPatternDetection: 0.15,
   },
   mixed: {
-    sentenceLengthVariance: 0.10,
+    sentenceLengthVariance: 0.1,
     vocabularyDiversity: 0.05,
-    burstiness: 0.10,
+    burstiness: 0.1,
     repeatedPhrases: 0.05,
     negationDensity: 0.05,
-    emDashFrequency: 0.10,
+    emDashFrequency: 0.1,
     listPatternDetection: 0.05,
   },
   structured: {
     sentenceLengthVariance: 0.05,
-    vocabularyDiversity: 0.00,
+    vocabularyDiversity: 0.0,
     burstiness: 0.05,
-    repeatedPhrases: 0.00,
-    negationDensity: 0.00,
-    emDashFrequency: 0.10,
-    listPatternDetection: 0.00,
+    repeatedPhrases: 0.0,
+    negationDensity: 0.0,
+    emDashFrequency: 0.1,
+    listPatternDetection: 0.0,
   },
 };
 
-export function analyseHeuristics(text: string, textType: TextType = "prose"): HeuristicResult {
+export function analyseHeuristics(
+  text: string,
+  textType: TextType = "prose",
+): HeuristicResult {
   const weights = WEIGHT_SETS[textType];
 
   const metrics: HeuristicMetric[] = [
@@ -298,43 +300,50 @@ export function analyseHeuristics(text: string, textType: TextType = "prose"): H
       key: "sentenceLengthVariance",
       name: "Sentence Uniformity",
       score: sentenceLengthVariance(text),
-      description: "Real writing is messy. Short sentences, then long rambling ones. A score here means every sentence looks suspiciously similar in length.",
+      description:
+        "Real writing is messy. Short sentences, then long rambling ones. A score here means every sentence looks suspiciously similar in length.",
     },
     {
       key: "vocabularyDiversity",
       name: "Vocabulary Repetition",
       score: vocabularyDiversity(text),
-      description: "People reach for different words. LLMs get stuck in loops, recycling the same vocabulary over and over.",
+      description:
+        "People reach for different words. LLMs get stuck in loops, recycling the same vocabulary over and over.",
     },
     {
       key: "burstiness",
       name: "Writing Burstiness",
       score: burstiness(text),
-      description: "You write in bursts. A quick thought, then a dense paragraph. LLM output stays flat and even throughout.",
+      description:
+        "You write in bursts. A quick thought, then a dense paragraph. LLM output stays flat and even throughout.",
     },
     {
       key: "repeatedPhrases",
       name: "Phrase Repetition",
       score: repeatedPhrases(text),
-      description: "Phrases like \"it's important to note\" or \"this allows you to\" popping up multiple times? That's a tell.",
+      description:
+        'Phrases like "it\'s important to note" or "this allows you to" popping up multiple times? That\'s a tell.',
     },
     {
       key: "negationDensity",
       name: "Negation Usage",
       score: negationDensity(text),
-      description: "People say \"don't\", \"can't\", \"won't\" all the time. LLMs avoid negatives and phrase things positively instead.",
+      description:
+        'People say "don\'t", "can\'t", "won\'t" all the time. LLMs avoid negatives and phrase things positively instead.',
     },
     {
       key: "emDashFrequency",
       name: "Em Dash Usage",
       score: emDashFrequency(text),
-      description: "Claude loves em dashes. ChatGPT uses them a lot too. If the text is littered with them, that's worth flagging.",
+      description:
+        "Claude loves em dashes. ChatGPT uses them a lot too. If the text is littered with them, that's worth flagging.",
     },
     {
       key: "listPatternDetection",
       name: "List Patterns",
       score: listPatternDetection(text),
-      description: "Three reasons, three benefits, three steps. LLMs default to groups of three. Humans don't think in tidy trinities.",
+      description:
+        "Three reasons, three benefits, three steps. LLMs default to groups of three. Humans don't think in tidy trinities.",
     },
   ];
 

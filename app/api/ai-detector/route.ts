@@ -1,18 +1,18 @@
 import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import { Redis } from "@upstash/redis";
 import { NextRequest, NextResponse } from "next/server";
-import {
-  SYSTEM_PROMPT,
-  buildAnalysisPrompt,
-} from "@/lib/ai-detector/prompt";
+import { SYSTEM_PROMPT, buildAnalysisPrompt } from "@/lib/ai-detector/prompt";
 import type { HeuristicResult, TextType } from "@/lib/ai-detector/types";
 
 const DAILY_CHAR_LIMIT = 1_000_000; // 1M chars/day per IP
-const MAX_TEXT_LENGTH = 50_000;      // 50K chars per analysis
+const MAX_TEXT_LENGTH = 50_000; // 50K chars per analysis
 
 // Redis client — null when env vars are missing (local dev)
 function getRedis(): Redis | null {
-  if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
+  if (
+    !process.env.UPSTASH_REDIS_REST_URL ||
+    !process.env.UPSTASH_REDIS_REST_TOKEN
+  ) {
     return null;
   }
   return Redis.fromEnv();
@@ -70,10 +70,7 @@ function isValidTextType(t: unknown): t is TextType {
 export async function POST(request: NextRequest) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    return NextResponse.json(
-      { error: "API not configured" },
-      { status: 503 },
-    );
+    return NextResponse.json({ error: "API not configured" }, { status: 503 });
   }
 
   const ip = getClientIp(request);
@@ -92,10 +89,7 @@ export async function POST(request: NextRequest) {
   const { text, heuristics, textType: rawTextType } = body;
 
   if (!text || typeof text !== "string") {
-    return NextResponse.json(
-      { error: "Text is required" },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: "Text is required" }, { status: 400 });
   }
 
   if (!isValidHeuristics(heuristics)) {
@@ -105,7 +99,9 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const textType: TextType = isValidTextType(rawTextType) ? rawTextType : "prose";
+  const textType: TextType = isValidTextType(rawTextType)
+    ? rawTextType
+    : "prose";
 
   const wordCount = text.trim().split(/\s+/).length;
   if (wordCount < 50) {
@@ -117,7 +113,9 @@ export async function POST(request: NextRequest) {
 
   if (text.length > MAX_TEXT_LENGTH) {
     return NextResponse.json(
-      { error: `Text must be under ${MAX_TEXT_LENGTH.toLocaleString()} characters` },
+      {
+        error: `Text must be under ${MAX_TEXT_LENGTH.toLocaleString()} characters`,
+      },
       { status: 400 },
     );
   }

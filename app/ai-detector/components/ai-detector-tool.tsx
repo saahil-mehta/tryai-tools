@@ -25,9 +25,10 @@ export function AiDetectorTool() {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [quota, setQuota] = useState<Quota | null>(null);
-  const cachedAnalysis = useRef<{ text: string; result: AnalysisResult } | null>(
-    null,
-  );
+  const cachedAnalysis = useRef<{
+    text: string;
+    result: AnalysisResult;
+  } | null>(null);
   const reportRef = useRef<HTMLDivElement | null>(null);
 
   const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
@@ -158,7 +159,9 @@ export function AiDetectorTool() {
     page.drawImage(pngImage, { x: 40, y: 40, width, height });
 
     const pdfBytes = await pdfDoc.save();
-    const blob = new Blob([new Uint8Array(pdfBytes)], { type: "application/pdf" });
+    const blob = new Blob([new Uint8Array(pdfBytes)], {
+      type: "application/pdf",
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -196,11 +199,14 @@ export function AiDetectorTool() {
                     ? "bg-amber-400"
                     : "bg-neutral-400"
               }`}
-              style={{ width: `${Math.min((quota.used / quota.limit) * 100, 100)}%` }}
+              style={{
+                width: `${Math.min((quota.used / quota.limit) * 100, 100)}%`,
+              }}
             />
           </div>
           <p className="text-center text-xs text-neutral-400">
-            {formatChars(quota.used)} / {formatChars(quota.limit)} characters used today
+            {formatChars(quota.used)} / {formatChars(quota.limit)} characters
+            used today
           </p>
         </div>
       )}

@@ -200,11 +200,15 @@ export default function AiDetectorPage() {
                 </li>
                 <li aria-hidden="true">/</li>
                 <li>
-                  <span className="text-neutral-500 dark:text-neutral-400">AI Tools</span>
+                  <span className="text-neutral-500 dark:text-neutral-400">
+                    AI Tools
+                  </span>
                 </li>
                 <li aria-hidden="true">/</li>
                 <li>
-                  <span className="text-neutral-700 dark:text-neutral-300">AI Content Detector</span>
+                  <span className="text-neutral-700 dark:text-neutral-300">
+                    AI Content Detector
+                  </span>
                 </li>
               </ol>
             </nav>
@@ -249,7 +253,9 @@ export default function AiDetectorPage() {
               </h2>
               <div className="mt-6 grid gap-px overflow-hidden rounded-xl border border-neutral-200 bg-neutral-200 dark:border-neutral-800 dark:bg-neutral-800">
                 <div className="bg-white p-5 dark:bg-neutral-950">
-                  <p className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">Step 1</p>
+                  <p className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+                    Step 1
+                  </p>
                   <h3 className="mt-1.5 font-medium text-neutral-900 dark:text-neutral-100">
                     Paste and analyse
                   </h3>
@@ -260,7 +266,9 @@ export default function AiDetectorPage() {
                   </p>
                 </div>
                 <div className="bg-white p-5 dark:bg-neutral-950">
-                  <p className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">Step 2</p>
+                  <p className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+                    Step 2
+                  </p>
                   <h3 className="mt-1.5 font-medium text-neutral-900 dark:text-neutral-100">
                     Read the report
                   </h3>
@@ -271,13 +279,15 @@ export default function AiDetectorPage() {
                   </p>
                 </div>
                 <div className="bg-white p-5 dark:bg-neutral-950">
-                  <p className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">Step 3</p>
+                  <p className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+                    Step 3
+                  </p>
                   <h3 className="mt-1.5 font-medium text-neutral-900 dark:text-neutral-100">
                     Download or share
                   </h3>
                   <p className="mt-1.5 text-sm text-neutral-500 dark:text-neutral-400">
-                    Copy the report as markdown or download a clean PDF.
-                    Handy when you need to send evidence to someone else.
+                    Copy the report as markdown or download a clean PDF. Handy
+                    when you need to send evidence to someone else.
                   </p>
                 </div>
               </div>
@@ -289,17 +299,30 @@ export default function AiDetectorPage() {
                 Supported models
               </h2>
               <p className="mt-4 text-neutral-500 dark:text-neutral-400 leading-relaxed">
-                Detection is structural, not model-specific. It works on
-                output from any major language model.
+                Detection is structural, not model-specific. It works on output
+                from any major language model.
               </p>
               <div className="mt-5 flex flex-wrap gap-2">
                 {[
-                  "ChatGPT", "GPT-4", "GPT-4o", "GPT-5",
-                  "Claude", "Claude 3.5 Sonnet", "Claude Opus",
-                  "Gemini", "Gemini Pro", "Gemini Ultra",
-                  "DeepSeek", "DeepSeek-V3",
-                  "Llama 3", "Llama 4", "Mistral", "Mixtral",
-                  "Copilot", "Jasper", "Perplexity",
+                  "ChatGPT",
+                  "GPT-4",
+                  "GPT-4o",
+                  "GPT-5",
+                  "Claude",
+                  "Claude 3.5 Sonnet",
+                  "Claude Opus",
+                  "Gemini",
+                  "Gemini Pro",
+                  "Gemini Ultra",
+                  "DeepSeek",
+                  "DeepSeek-V3",
+                  "Llama 3",
+                  "Llama 4",
+                  "Mistral",
+                  "Mixtral",
+                  "Copilot",
+                  "Jasper",
+                  "Perplexity",
                 ].map((model) => (
                   <span
                     key={model}
@@ -339,8 +362,8 @@ export default function AiDetectorPage() {
                     Downloadable report
                   </dt>
                   <dd className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
-                    Copy as markdown or download a PDF. Send it to a
-                    colleague, attach it to a submission.
+                    Copy as markdown or download a PDF. Send it to a colleague,
+                    attach it to a submission.
                   </dd>
                 </div>
                 <div>
@@ -361,31 +384,39 @@ export default function AiDetectorPage() {
               </h2>
               <div className="mt-6 grid gap-px overflow-hidden rounded-xl border border-neutral-200 bg-neutral-200 dark:border-neutral-800 dark:bg-neutral-800 sm:grid-cols-2">
                 <div className="bg-white p-5 dark:bg-neutral-950">
-                  <h3 className="text-sm font-medium text-neutral-900 dark:text-neutral-100">Students</h3>
+                  <h3 className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                    Students
+                  </h3>
                   <p className="mt-1.5 text-sm text-neutral-500 dark:text-neutral-400">
-                    Check your work before submission. Better to know now
-                    if something reads as AI-generated.
+                    Check your work before submission. Better to know now if
+                    something reads as AI-generated.
                   </p>
                 </div>
                 <div className="bg-white p-5 dark:bg-neutral-950">
-                  <h3 className="text-sm font-medium text-neutral-900 dark:text-neutral-100">Educators</h3>
+                  <h3 className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                    Educators
+                  </h3>
                   <p className="mt-1.5 text-sm text-neutral-500 dark:text-neutral-400">
                     Sentence-level evidence you can point to. Useful in a
-                    conversation where vague accusations won't do.
+                    conversation where vague accusations won&apos;t do.
                   </p>
                 </div>
                 <div className="bg-white p-5 dark:bg-neutral-950">
-                  <h3 className="text-sm font-medium text-neutral-900 dark:text-neutral-100">Writers</h3>
+                  <h3 className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                    Writers
+                  </h3>
                   <p className="mt-1.5 text-sm text-neutral-500 dark:text-neutral-400">
-                    Identify which passages trigger false positives so you
-                    can revise before an editor raises the question.
+                    Identify which passages trigger false positives so you can
+                    revise before an editor raises the question.
                   </p>
                 </div>
                 <div className="bg-white p-5 dark:bg-neutral-950">
-                  <h3 className="text-sm font-medium text-neutral-900 dark:text-neutral-100">Publishers</h3>
+                  <h3 className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                    Publishers
+                  </h3>
                   <p className="mt-1.5 text-sm text-neutral-500 dark:text-neutral-400">
-                    Screen freelance and guest submissions. A quicker first
-                    pass than a manual read.
+                    Screen freelance and guest submissions. A quicker first pass
+                    than a manual read.
                   </p>
                 </div>
               </div>
@@ -417,37 +448,49 @@ export default function AiDetectorPage() {
                   <tbody className="text-neutral-500 dark:text-neutral-400">
                     <tr className="border-b border-neutral-200/60 dark:border-neutral-800/60">
                       <td className="px-5 py-3">Sentence highlighting</td>
-                      <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">Yes</td>
+                      <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">
+                        Yes
+                      </td>
                       <td className="px-5 py-3">Partial</td>
                       <td className="px-5 py-3">Yes</td>
                     </tr>
                     <tr className="border-b border-neutral-200/60 dark:border-neutral-800/60">
                       <td className="px-5 py-3">Reasoning</td>
-                      <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">Detailed</td>
+                      <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">
+                        Detailed
+                      </td>
                       <td className="px-5 py-3">No</td>
                       <td className="px-5 py-3">Basic</td>
                     </tr>
                     <tr className="border-b border-neutral-200/60 dark:border-neutral-800/60">
                       <td className="px-5 py-3">Detection method</td>
-                      <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">7 heuristics + AI</td>
+                      <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">
+                        7 heuristics + AI
+                      </td>
                       <td className="px-5 py-3">AI only</td>
                       <td className="px-5 py-3">AI only</td>
                     </tr>
                     <tr className="border-b border-neutral-200/60 dark:border-neutral-800/60">
                       <td className="px-5 py-3">Free daily scans</td>
-                      <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">5</td>
+                      <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">
+                        5
+                      </td>
                       <td className="px-5 py-3">Unlimited</td>
                       <td className="px-5 py-3">3</td>
                     </tr>
                     <tr className="border-b border-neutral-200/60 dark:border-neutral-800/60">
                       <td className="px-5 py-3">Downloadable PDF</td>
-                      <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">Yes</td>
+                      <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">
+                        Yes
+                      </td>
                       <td className="px-5 py-3">No</td>
                       <td className="px-5 py-3">No</td>
                     </tr>
                     <tr>
                       <td className="px-5 py-3">Sign-up needed</td>
-                      <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">No</td>
+                      <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">
+                        No
+                      </td>
                       <td className="px-5 py-3">No</td>
                       <td className="px-5 py-3">Yes (full)</td>
                     </tr>
@@ -467,8 +510,19 @@ export default function AiDetectorPage() {
                     <summary className="cursor-pointer list-none px-5 py-4 text-sm text-neutral-800 dark:text-neutral-200 font-medium flex items-center justify-between">
                       {item.question}
                       <span className="ml-4 shrink-0 text-neutral-400 dark:text-neutral-500 group-open:rotate-180 transition-transform duration-200">
-                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                          <path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                        >
+                          <path
+                            d="M4 6L8 10L12 6"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
                         </svg>
                       </span>
                     </summary>
