@@ -37,6 +37,7 @@ The goal is modular separation without premature monorepo overhead. Every module
 ### Per-Tool Template
 
 Every tool page must include:
+
 - H1 with primary keyword
 - Tool widget (interactive, client-side, zero-load-state)
 - 300-800 words of SEO copy below the tool
@@ -48,6 +49,7 @@ Every tool page must include:
 ## Choosing What to Build
 
 Before building any new tool:
+
 1. **Validate demand** — confirm search volume exists via Google Trends or similar
 2. **Check competition** — can we realistically rank on page 1?
 3. **Proven concepts win** — pick ideas that already exist and have proven demand; don't invent new categories
@@ -130,6 +132,7 @@ Before shipping any UI, ask: "Would this look at home on vercel.com?" If the ans
 ### Optional SEO Enhancements
 
 These are best practices to apply when the project reaches sufficient scale or when building regional tool variants:
+
 - **Hreflang tags** — for UK/US/India variants of the same tool (e.g. a tax calculator with regional versions); tells Google which version to serve to which audience
 - **Localisation** — currency symbols, spelling (colour vs color), date formats, tax regimes per market
 
@@ -144,10 +147,12 @@ These are best practices to apply when the project reaches sufficient scale or w
 ## Development Workflow
 
 - Makefile targets for all common operations — not raw commands
+- **Always run `make check` before committing.** It runs lint, format, typecheck, and tests in sequence. If any step fails, fix it before you commit.
 
 ## Content Pipeline
 
 For each tool page:
+
 1. Keyword research (primary + secondary + FAQ queries)
 2. Build interactive tool widget
 3. Write SEO copy (what it does, how to use, why it matters)
