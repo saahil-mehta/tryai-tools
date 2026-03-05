@@ -197,9 +197,7 @@ function SentenceAnalysis({
           return (
             <div key={v} className="flex items-center gap-1.5">
               <div className={`h-2.5 w-2.5 rounded-full ${s.dot}`} />
-              <span className="text-xs capitalize text-neutral-400">
-                {v}
-              </span>
+              <span className="text-xs capitalize text-neutral-400">{v}</span>
             </div>
           );
         })}
@@ -215,21 +213,32 @@ function signalLabel(score: number): string {
   return "No signal";
 }
 
-function MetricRow({ metric, index }: { metric: HeuristicMetric; index: number }) {
+function MetricRow({
+  metric,
+  index,
+}: {
+  metric: HeuristicMetric;
+  index: number;
+}) {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
         <div className="flex cursor-default items-center gap-4 px-5 py-3">
           <span className="min-w-0 flex-1 text-sm text-neutral-600 dark:text-neutral-400">
             <span className="truncate">{metric.name}</span>
-            <span className={`ml-2 text-xs ${scoreColour(metric.score)} opacity-70`}>
+            <span
+              className={`ml-2 text-xs ${scoreColour(metric.score)} opacity-70`}
+            >
               {signalLabel(metric.score)}
             </span>
           </span>
           <span
             className={`w-10 text-right text-sm font-semibold tabular-nums ${scoreColour(metric.score)}`}
           >
-            <AnimatedCounter target={Math.round(metric.score)} delay={200 + index * 80} />
+            <AnimatedCounter
+              target={Math.round(metric.score)}
+              delay={200 + index * 80}
+            />
           </span>
           <div className="h-1.5 w-24 shrink-0 overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800">
             <div
@@ -242,49 +251,39 @@ function MetricRow({ metric, index }: { metric: HeuristicMetric; index: number }
           </div>
         </div>
       </TooltipTrigger>
-      <TooltipContent side="top">
-        {metric.description}
-      </TooltipContent>
+      <TooltipContent side="top">{metric.description}</TooltipContent>
     </Tooltip>
   );
 }
 
-function StatisticalIndicators({
-  metrics,
-}: {
-  metrics: HeuristicMetric[];
-}) {
+function StatisticalIndicators({ metrics }: { metrics: HeuristicMetric[] }) {
   return (
     <TooltipProvider delayDuration={200}>
       <div className="bg-white dark:bg-neutral-950">
         <details className="group" open>
-        <summary className="cursor-pointer list-none px-6 py-4 text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500 flex items-center justify-between">
-          Statistical indicators
-          <span className="text-neutral-400 dark:text-neutral-500 group-open:rotate-180 transition-transform duration-200">
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 16 16"
-              fill="none"
-            >
-              <path
-                d="M4 6L8 10L12 6"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
-        </summary>
-        <p className="px-6 pb-2 text-xs text-neutral-400 dark:text-neutral-500">
-          Each score is 0-100. Higher means more likely AI-generated. Hover a row to see what it measures.
-        </p>
-        <div className="divide-y divide-neutral-100 dark:divide-neutral-800/50">
-          {metrics.map((metric, i) => (
-            <MetricRow key={metric.key} metric={metric} index={i} />
-          ))}
-        </div>
+          <summary className="cursor-pointer list-none px-6 py-4 text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500 flex items-center justify-between">
+            Statistical indicators
+            <span className="text-neutral-400 dark:text-neutral-500 group-open:rotate-180 transition-transform duration-200">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path
+                  d="M4 6L8 10L12 6"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+          </summary>
+          <p className="px-6 pb-2 text-xs text-neutral-400 dark:text-neutral-500">
+            Each score is 0-100. Higher means more likely AI-generated. Hover a
+            row to see what it measures.
+          </p>
+          <div className="divide-y divide-neutral-100 dark:divide-neutral-800/50">
+            {metrics.map((metric, i) => (
+              <MetricRow key={metric.key} metric={metric} index={i} />
+            ))}
+          </div>
         </details>
       </div>
     </TooltipProvider>
@@ -342,7 +341,8 @@ export function AnalysisReport({ result, loading }: AnalysisReportProps) {
               <span className="font-medium text-neutral-500 dark:text-neutral-400">
                 {result.textType}
               </span>{" "}
-              text. Some statistical indicators may be less reliable for non-prose content.
+              text. Some statistical indicators may be less reliable for
+              non-prose content.
             </p>
           </div>
         )}
@@ -455,7 +455,13 @@ export function PdfReport({ result, reportRef }: PdfReportProps) {
       </div>
 
       {/* Divider */}
-      <hr style={{ border: "none", borderTop: "1px solid #e5e5e5", margin: "24px 0" }} />
+      <hr
+        style={{
+          border: "none",
+          borderTop: "1px solid #e5e5e5",
+          margin: "24px 0",
+        }}
+      />
 
       {/* Reasoning */}
       <div style={{ marginBottom: "24px" }}>
@@ -474,7 +480,13 @@ export function PdfReport({ result, reportRef }: PdfReportProps) {
         <p style={{ fontSize: "14px", color: "#525252" }}>{result.reasoning}</p>
       </div>
 
-      <hr style={{ border: "none", borderTop: "1px solid #e5e5e5", margin: "24px 0" }} />
+      <hr
+        style={{
+          border: "none",
+          borderTop: "1px solid #e5e5e5",
+          margin: "24px 0",
+        }}
+      />
 
       {/* Sentence analysis */}
       <div style={{ marginBottom: "24px" }}>
@@ -518,7 +530,10 @@ export function PdfReport({ result, reportRef }: PdfReportProps) {
           }}
         >
           {(["human", "uncertain", "ai"] as const).map((v) => (
-            <div key={v} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+            <div
+              key={v}
+              style={{ display: "flex", alignItems: "center", gap: "6px" }}
+            >
               <div
                 style={{
                   width: "8px",
@@ -546,7 +561,13 @@ export function PdfReport({ result, reportRef }: PdfReportProps) {
         </div>
       </div>
 
-      <hr style={{ border: "none", borderTop: "1px solid #e5e5e5", margin: "24px 0" }} />
+      <hr
+        style={{
+          border: "none",
+          borderTop: "1px solid #e5e5e5",
+          margin: "24px 0",
+        }}
+      />
 
       {/* Statistical indicators */}
       <div style={{ marginBottom: "24px" }}>
@@ -624,7 +645,13 @@ export function PdfReport({ result, reportRef }: PdfReportProps) {
       {/* Detected patterns */}
       {result.patterns.length > 0 && (
         <>
-          <hr style={{ border: "none", borderTop: "1px solid #e5e5e5", margin: "24px 0" }} />
+          <hr
+            style={{
+              border: "none",
+              borderTop: "1px solid #e5e5e5",
+              margin: "24px 0",
+            }}
+          />
           <div style={{ marginBottom: "24px" }}>
             <p
               style={{
@@ -660,7 +687,13 @@ export function PdfReport({ result, reportRef }: PdfReportProps) {
       )}
 
       {/* Branding footer */}
-      <hr style={{ border: "none", borderTop: "1px solid #e5e5e5", margin: "24px 0" }} />
+      <hr
+        style={{
+          border: "none",
+          borderTop: "1px solid #e5e5e5",
+          margin: "24px 0",
+        }}
+      />
       <div
         style={{
           display: "flex",

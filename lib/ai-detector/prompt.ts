@@ -142,5 +142,12 @@ export const RESPONSE_SCHEMA = {
       description: "Classification of the text type",
     },
   },
-  required: ["verdict", "confidence", "sentences", "reasoning", "patterns", "textType"],
+  required: [
+    "verdict",
+    "confidence",
+    "sentences",
+    "reasoning",
+    "patterns",
+    "textType",
+  ],
 };

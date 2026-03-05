@@ -53,13 +53,9 @@ export function TextInput({ value, onChange, disabled }: TextInputProps) {
             words
           </span>
           <span className={charColour}>
-            <span className="tabular-nums">
-              {charCount.toLocaleString()}
-            </span>
+            <span className="tabular-nums">{charCount.toLocaleString()}</span>
             {" / "}
-            <span className="tabular-nums">
-              {MAX_CHARS.toLocaleString()}
-            </span>
+            <span className="tabular-nums">{MAX_CHARS.toLocaleString()}</span>
           </span>
         </div>
         {wordCount > 0 && !isMinimumMet && (
