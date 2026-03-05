@@ -1,5 +1,7 @@
 "use client";
 
+const MAX_CHARS = 50_000;
+
 interface TextInputProps {
   value: string;
   onChange: (text: string) => void;
@@ -11,12 +13,20 @@ export function TextInput({ value, onChange, disabled }: TextInputProps) {
   const charCount = value.length;
   const isMinimumMet = wordCount >= 50;
 
+  const charColour =
+    charCount >= MAX_CHARS
+      ? "text-red-400"
+      : charCount > 45_000
+        ? "text-amber-400"
+        : "";
+
   return (
     <div className="relative">
       <textarea
         value={value}
         onChange={(e) => onChange(e.target.value)}
         disabled={disabled}
+        maxLength={MAX_CHARS}
         placeholder="Paste your text here to analyse..."
         rows={10}
         className={`
@@ -42,11 +52,14 @@ export function TextInput({ value, onChange, disabled }: TextInputProps) {
             </span>{" "}
             words
           </span>
-          <span>
+          <span className={charColour}>
             <span className="tabular-nums">
               {charCount.toLocaleString()}
-            </span>{" "}
-            characters
+            </span>
+            {" / "}
+            <span className="tabular-nums">
+              {MAX_CHARS.toLocaleString()}
+            </span>
           </span>
         </div>
         {wordCount > 0 && !isMinimumMet && (

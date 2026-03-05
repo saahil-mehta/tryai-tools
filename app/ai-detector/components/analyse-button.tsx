@@ -24,10 +24,10 @@ export function AnalyseButton({
       <div className="flex flex-col items-center gap-3">
         <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 px-6 py-4 text-center">
           <p className="font-medium text-amber-600 dark:text-amber-300">
-            You&apos;ve used all 5 free scans today
+            You&apos;ve hit the daily character limit (1M characters)
           </p>
           <p className="mt-1 text-sm text-amber-600/70 dark:text-amber-300/70">
-            Sign up for 5 more daily scans, coming soon
+            Come back tomorrow for a fresh allowance
           </p>
         </div>
         <button

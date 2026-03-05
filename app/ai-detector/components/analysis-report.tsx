@@ -335,6 +335,17 @@ export function AnalysisReport({ result, loading }: AnalysisReportProps) {
     >
       <div className="grid gap-px">
         <VerdictHero result={result} />
+        {result.textType && result.textType !== "prose" && (
+          <div className="bg-white px-6 py-3 dark:bg-neutral-950">
+            <p className="text-xs text-neutral-400 dark:text-neutral-500">
+              Detected as{" "}
+              <span className="font-medium text-neutral-500 dark:text-neutral-400">
+                {result.textType}
+              </span>{" "}
+              text. Some statistical indicators may be less reliable for non-prose content.
+            </p>
+          </div>
+        )}
         <Reasoning text={result.reasoning} />
         <SentenceAnalysis sentences={result.sentences} />
         <StatisticalIndicators metrics={result.heuristics.metrics} />

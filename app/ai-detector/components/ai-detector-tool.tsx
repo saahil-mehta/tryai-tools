@@ -3,35 +3,20 @@
 import { useCallback, useRef, useState } from "react";
 import { toast } from "sonner";
 import { analyseHeuristics } from "@/lib/ai-detector/heuristics";
-import type { AnalysisPhase, AnalysisResult } from "@/lib/ai-detector/types";
+import { classifyTextType } from "@/lib/ai-detector/classify-text";
+import type {
+  AnalysisPhase,
+  AnalysisResult,
+  Quota,
+} from "@/lib/ai-detector/types";
 import { TextInput } from "./text-input";
 import { AnalyseButton } from "./analyse-button";
 import { AnalysisReport, PdfReport } from "./analysis-report";
 
-const DAILY_LIMIT = 5;
-const STORAGE_KEY = "ai-detector-scans";
-
-function getScanCount(): number {
-  if (typeof window === "undefined") return 0;
-  try {
-    const data = localStorage.getItem(STORAGE_KEY);
-    if (!data) return 0;
-    const parsed = JSON.parse(data);
-    const today = new Date().toISOString().slice(0, 10);
-    if (parsed.date !== today) return 0;
-    return parsed.count || 0;
-  } catch {
-    return 0;
-  }
-}
-
-function incrementScanCount(): void {
-  const today = new Date().toISOString().slice(0, 10);
-  const current = getScanCount();
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify({ date: today, count: current + 1 }),
-  );
+function formatChars(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `${Math.round(n / 1_000)}K`;
+  return n.toString();
 }
 
 export function AiDetectorTool() {
@@ -39,6 +24,7 @@ export function AiDetectorTool() {
   const [phase, setPhase] = useState<AnalysisPhase>("idle");
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [quota, setQuota] = useState<Quota | null>(null);
   const cachedAnalysis = useRef<{ text: string; result: AnalysisResult } | null>(
     null,
   );
@@ -49,11 +35,6 @@ export function AiDetectorTool() {
 
   const handleAnalyse = useCallback(async () => {
     if (!canAnalyse) return;
-
-    if (getScanCount() >= DAILY_LIMIT) {
-      setPhase("rate-limited");
-      return;
-    }
 
     // Check cache
     if (cachedAnalysis.current && cachedAnalysis.current.text === text) {
@@ -66,15 +47,23 @@ export function AiDetectorTool() {
     setResult(null);
     setPhase("analysing");
 
-    // Compute heuristics (instant, client-side)
-    const heuristics = analyseHeuristics(text);
+    // Classify text type and compute heuristics (instant, client-side)
+    const textType = classifyTextType(text);
+    const heuristics = analyseHeuristics(text, textType);
 
     try {
       const response = await fetch("/api/ai-detector", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text, heuristics }),
+        body: JSON.stringify({ text, heuristics, textType }),
       });
+
+      if (response.status === 429) {
+        const data = await response.json();
+        if (data.quota) setQuota(data.quota);
+        setPhase("rate-limited");
+        return;
+      }
 
       if (!response.ok) {
         const data = await response.json();
@@ -82,12 +71,17 @@ export function AiDetectorTool() {
       }
 
       const apiResult = await response.json();
-      const fullResult: AnalysisResult = { ...apiResult, heuristics };
+      const { quota: returnedQuota, ...rest } = apiResult;
+      const fullResult: AnalysisResult = {
+        ...rest,
+        heuristics,
+        textType: rest.textType || textType,
+      };
 
+      if (returnedQuota) setQuota(returnedQuota);
       setResult(fullResult);
       setPhase("complete");
       cachedAnalysis.current = { text, result: fullResult };
-      incrementScanCount();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Analysis failed");
       setPhase("error");
@@ -190,6 +184,26 @@ export function AiDetectorTool() {
           onDownload={handleDownload}
         />
       </div>
+
+      {quota && (
+        <div className="mx-auto w-full max-w-md space-y-1.5">
+          <div className="h-1.5 w-full overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800">
+            <div
+              className={`h-full rounded-full transition-all duration-500 ${
+                quota.used / quota.limit > 0.9
+                  ? "bg-red-400"
+                  : quota.used / quota.limit > 0.75
+                    ? "bg-amber-400"
+                    : "bg-neutral-400"
+              }`}
+              style={{ width: `${Math.min((quota.used / quota.limit) * 100, 100)}%` }}
+            />
+          </div>
+          <p className="text-center text-xs text-neutral-400">
+            {formatChars(quota.used)} / {formatChars(quota.limit)} characters used today
+          </p>
+        </div>
+      )}
 
       {error && phase === "error" && (
         <div className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-center text-sm text-red-600 dark:text-red-300">
