@@ -11,6 +11,7 @@ import type {
 } from "@/lib/ai-detector/types";
 import { TextInput } from "./text-input";
 import { AnalyseButton } from "./analyse-button";
+import { AnalysisProgress } from "./analysis-progress";
 import { AnalysisReport, PdfReport } from "./analysis-report";
 
 function formatChars(n: number): string {
@@ -81,16 +82,21 @@ export function AiDetectorTool() {
 
       if (returnedQuota) setQuota(returnedQuota);
       setResult(fullResult);
-      setPhase("complete");
       cachedAnalysis.current = { text, result: fullResult };
+
+      // Progress bar handles the smooth count to 100% then calls handleProgressFinished
+      setPhase("finishing");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Analysis failed");
       setPhase("error");
     }
   }, [canAnalyse, text]);
 
+  const handleProgressFinished = useCallback(() => {
+    setPhase("complete");
+  }, []);
+
   const handleReset = useCallback(() => {
-    setText("");
     setPhase("idle");
     setResult(null);
     setError(null);
@@ -112,7 +118,9 @@ export function AiDetectorTool() {
 
     if (result.patterns.length > 0) {
       lines.push(`## Detected Patterns`, "");
-      result.patterns.forEach((p) => lines.push(`- ${p}`));
+      result.patterns.forEach((p) =>
+        lines.push(`- **${p.pattern}**: ${p.explanation}`),
+      );
       lines.push("");
     }
 
@@ -171,7 +179,7 @@ export function AiDetectorTool() {
     toast.success("PDF downloaded");
   }, [result]);
 
-  const isAnalysing = phase === "analysing";
+  const isAnalysing = phase === "analysing" || phase === "finishing";
 
   return (
     <div className="mx-auto w-full max-w-2xl space-y-8">
@@ -181,12 +189,20 @@ export function AiDetectorTool() {
         <AnalyseButton
           phase={phase}
           canAnalyse={canAnalyse}
+          hasResult={result !== null}
           onAnalyse={handleAnalyse}
           onReset={handleReset}
           onCopyResults={handleCopyResults}
           onDownload={handleDownload}
         />
       </div>
+
+      {(phase === "analysing" || phase === "finishing") && (
+        <AnalysisProgress
+          complete={phase === "finishing"}
+          onFinished={handleProgressFinished}
+        />
+      )}
 
       {quota && (
         <div className="mx-auto w-full max-w-md space-y-1.5">
