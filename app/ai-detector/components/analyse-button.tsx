@@ -27,7 +27,7 @@ export function AnalyseButton({
             You&apos;ve used all 5 free scans today
           </p>
           <p className="mt-1 text-sm text-amber-600/70 dark:text-amber-300/70">
-            Sign up for 5 more daily scans — coming soon
+            Sign up for 5 more daily scans, coming soon
           </p>
         </div>
         <button
