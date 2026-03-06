@@ -5,6 +5,7 @@ import Link from "next/link";
 import Script from "next/script";
 
 const GA_ID = "G-Q6LZBPTHLF";
+const ADSENSE_CLIENT = "ca-pub-8849126721468775";
 const CONSENT_KEY = "cookie-consent";
 
 type Consent = "granted" | "denied" | null;
@@ -14,6 +15,17 @@ function getStoredConsent(): Consent {
   const value = localStorage.getItem(CONSENT_KEY);
   if (value === "granted" || value === "denied") return value;
   return null;
+}
+
+function updateConsentMode(state: "granted" | "denied") {
+  if (typeof window !== "undefined" && window.gtag) {
+    window.gtag("consent", "update", {
+      ad_storage: state,
+      ad_personalization: state,
+      ad_user_data: state,
+      analytics_storage: state,
+    });
+  }
 }
 
 export function CookieConsent() {
@@ -30,18 +42,27 @@ export function CookieConsent() {
 
   const handleAccept = useCallback(() => {
     localStorage.setItem(CONSENT_KEY, "granted");
+    updateConsentMode("granted");
     setConsent("granted");
     setVisible(false);
   }, []);
 
   const handleDecline = useCallback(() => {
     localStorage.setItem(CONSENT_KEY, "denied");
+    updateConsentMode("denied");
     setConsent("denied");
     setVisible(false);
   }, []);
 
   return (
     <>
+      {/* AdSense — always loaded, consent mode controls personalisation */}
+      <Script
+        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`}
+        strategy="afterInteractive"
+        crossOrigin="anonymous"
+      />
+
       {/* GA4 scripts — only load after consent */}
       {consent === "granted" && (
         <>
@@ -78,7 +99,7 @@ export function CookieConsent() {
               "
             >
               <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                We use cookies for analytics.{" "}
+                We use cookies for analytics and personalised ads.{" "}
                 <Link
                   href="/privacy-policy"
                   className="text-neutral-900 dark:text-neutral-200 underline underline-offset-4"
