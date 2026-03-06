@@ -111,6 +111,24 @@ export default function Home() {
             </p>
           </section>
 
+          <section className="mt-16">
+            <h2 className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+              Contact
+            </h2>
+            <p className="mt-4 text-sm text-neutral-500 dark:text-neutral-400">
+              Got an idea for a tool, or want to get in touch? Reach the founder
+              at{" "}
+              <a
+                href="https://saahil.co.uk"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-neutral-900 dark:text-neutral-200 underline underline-offset-4 hover:text-neutral-600 dark:hover:text-neutral-400 transition-colors"
+              >
+                saahil.co.uk
+              </a>
+            </p>
+          </section>
+
           <SiteFooter />
         </div>
       </div>
