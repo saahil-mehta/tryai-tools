@@ -207,9 +207,12 @@ export default function AiDetectorPage() {
                 </li>
                 <li aria-hidden="true">/</li>
                 <li>
-                  <span className="text-neutral-500 dark:text-neutral-400">
+                  <Link
+                    href="/"
+                    className="text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors"
+                  >
                     AI Tools
-                  </span>
+                  </Link>
                 </li>
                 <li aria-hidden="true">/</li>
                 <li>
