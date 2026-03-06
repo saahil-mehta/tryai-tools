@@ -181,10 +181,10 @@ export default function TermsOfServicePage() {
             <p className="mt-3">
               Questions? Email{" "}
               <a
-                href="mailto:hello@tryai.tools"
+                href="mailto:hello@knowsee.co.uk"
                 className="text-neutral-900 dark:text-neutral-200 underline underline-offset-4"
               >
-                hello@tryai.tools
+                hello@knowsee.co.uk
               </a>
               .
             </p>

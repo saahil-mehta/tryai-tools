@@ -48,10 +48,10 @@ export default function PrivacyPolicyPage() {
               tryai.tools is operated by Knowsee (knowsee.co.uk). We build free,
               browser-based utility tools. You can reach us at{" "}
               <a
-                href="mailto:hello@tryai.tools"
+                href="mailto:hello@knowsee.co.uk"
                 className="text-neutral-900 dark:text-neutral-200 underline underline-offset-4"
               >
-                hello@tryai.tools
+                hello@knowsee.co.uk
               </a>
               .
             </p>
