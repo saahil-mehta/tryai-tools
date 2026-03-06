@@ -12,7 +12,7 @@ const plusJakarta = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: "tryai.tools",
-  description: "AI tools, simplified.",
+  description: "Simple tools to make your life easy.",
 };
 
 // Inline script to set dark mode before paint — prevents FOUC
