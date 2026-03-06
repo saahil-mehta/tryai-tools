@@ -1,25 +1,35 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 
 export const metadata: Metadata = {
-  title: "Free AI Tools Online — Detection, Analysis & More | tryai.tools",
+  title:
+    "Free Online Tools for Everyday Tasks | Calculators, AI Detection & More | tryai.tools",
   description:
-    "Free browser-based AI tools. Detect AI-generated text, analyse content, and more. No sign-up, no data stored, fast results.",
+    "Free browser-based tools for everyday tasks. AI detection, calculators, and more. No sign-up, no data stored.",
   openGraph: {
-    title: "Free AI Tools Online | tryai.tools",
+    title: "Free Online Tools | tryai.tools",
     description:
-      "Free browser-based AI tools. Detect AI-generated text, analyse content, and more.",
+      "Free browser-based tools for everyday tasks. AI detection, calculators, and more. No sign-up, no data stored.",
     url: "https://tryai.tools",
     siteName: "tryai.tools",
     type: "website",
+    images: [
+      {
+        url: "https://tryai.tools/og.png",
+        width: 1200,
+        height: 630,
+        alt: "tryai.tools - simple tools to make your life easy",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Free AI Tools Online | tryai.tools",
+    title: "Free Online Tools | tryai.tools",
     description:
-      "Free browser-based AI tools. Detect AI-generated text, analyse content, and more.",
+      "Free browser-based tools for everyday tasks. AI detection, calculators, and more.",
+    images: ["https://tryai.tools/og.png"],
   },
   alternates: {
     canonical: "https://tryai.tools",
@@ -48,7 +58,7 @@ export default function Home() {
             name: "tryai.tools",
             url: "https://tryai.tools",
             description:
-              "Free browser-based AI tools. Detect AI-generated text, analyse content, and more.",
+              "Free browser-based tools for everyday tasks. AI detection, calculators, and more.",
             publisher: {
               "@type": "Organization",
               name: "Knowsee",
@@ -60,29 +70,22 @@ export default function Home() {
 
       <div className="min-h-svh bg-white dark:bg-neutral-950">
         <div className="mx-auto max-w-3xl px-4 py-16 sm:py-24">
-          <div className="flex items-start justify-between">
-            <div>
-              <h1 className="text-3xl font-semibold tracking-tight text-neutral-900 dark:text-white sm:text-4xl">
-                tryai.tools
-              </h1>
-              <p className="mt-3 text-lg text-neutral-500 dark:text-neutral-400">
-                Free AI tools that run in your browser. No sign-up, no data
-                stored.
-              </p>
-            </div>
-            <ThemeToggle />
-          </div>
+          <SiteHeader />
+          <h1 className="sr-only">tryai.tools</h1>
+          <p className="mt-4 text-lg text-neutral-500 dark:text-neutral-400">
+            Simple tools to make your life easy.
+          </p>
 
           <section className="mt-16">
             <h2 className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
               Tools
             </h2>
-            <div className="mt-4 divide-y divide-neutral-200 rounded-xl border border-neutral-200 dark:divide-neutral-800 dark:border-neutral-800">
+            <div className="mt-4 space-y-3">
               {tools.map((tool) => (
                 <Link
                   key={tool.slug}
                   href={`/${tool.slug}`}
-                  className="group flex items-start justify-between gap-4 px-5 py-5 transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-900/50 first:rounded-t-xl last:rounded-b-xl"
+                  className="group flex items-start justify-between gap-4 rounded-xl border border-neutral-200 dark:border-neutral-700 px-5 py-5 transition-all active:scale-[0.99] hover:bg-neutral-50 dark:hover:bg-neutral-900 feature-expand-glow"
                 >
                   <div className="min-w-0">
                     <h3 className="font-medium text-neutral-900 dark:text-neutral-100 group-hover:text-neutral-600 dark:group-hover:text-neutral-300 transition-colors">
