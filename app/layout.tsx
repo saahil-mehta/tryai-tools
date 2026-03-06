@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Plus_Jakarta_Sans } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "sonner";
 import "./globals.css";
 
@@ -50,6 +51,7 @@ export default function RootLayout({
       </head>
       <body className={`${plusJakarta.variable} antialiased`}>
         {children}
+        <Analytics />
         <Toaster
           position="bottom-center"
           toastOptions={{
