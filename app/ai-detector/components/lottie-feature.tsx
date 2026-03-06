@@ -61,7 +61,11 @@ export function LottieFeature({
     <div className="flex items-start gap-5">
       <div
         className="shrink-0"
-        style={{ width: 56, height: 56, filter: dark ? FILTER_DARK : FILTER_LIGHT }}
+        style={{
+          width: 56,
+          height: 56,
+          filter: dark ? FILTER_DARK : FILTER_LIGHT,
+        }}
       >
         {animationData && (
           <Lottie
@@ -102,7 +106,11 @@ export function LottieFeatureCompact({
     <div className="flex items-start gap-3 bg-white p-4 dark:bg-neutral-950">
       <div
         className="shrink-0 mt-0.5"
-        style={{ width: 28, height: 28, filter: dark ? FILTER_DARK : FILTER_LIGHT }}
+        style={{
+          width: 28,
+          height: 28,
+          filter: dark ? FILTER_DARK : FILTER_LIGHT,
+        }}
       >
         {animationData && (
           <Lottie
@@ -148,7 +156,11 @@ export function HowItWorksStep({
     <div className="flex items-center gap-5 bg-white p-5 dark:bg-neutral-950">
       <div
         className="shrink-0"
-        style={{ width: 40, height: 40, filter: dark ? FILTER_DARK : FILTER_LIGHT }}
+        style={{
+          width: 40,
+          height: 40,
+          filter: dark ? FILTER_DARK : FILTER_LIGHT,
+        }}
       >
         {animationData && (
           <Lottie
