@@ -1,0 +1,29 @@
+# tryai.tools
+
+> Free browser-based AI tools. No sign-up, no data stored.
+
+Built by Knowsee (https://knowsee.co.uk).
+
+## Tools
+
+### AI Content Detector
+- URL: https://tryai.tools/ai-detector
+- What it does: Detects AI-generated text from ChatGPT, Claude, Gemini, DeepSeek, and other LLMs. Runs 7 statistical heuristics client-side, then classifies each sentence server-side using Gemini Flash.
+- Features: Sentence-level highlighting, confidence scores, detected patterns with explanations, detailed reasoning, PDF report export, markdown copy.
+- Limitations: No detector is 100% accurate. Results are statistical estimates, not proof. Short texts (under 50 words) are not supported.
+- Free tier: 1M characters per day, no account required.
+
+## Policies
+
+- Privacy policy: https://tryai.tools/privacy-policy
+- Terms of service: https://tryai.tools/terms-of-service
+
+## Technical
+
+- Stack: Next.js, Tailwind CSS, Vercel
+- AI model used: Google Gemini 2.5 Flash (for detection analysis)
+- Data handling: Text is sent to Gemini API for processing and not stored. Rate limit counters use Upstash Redis. Theme preference and scan count stored in browser localStorage only.
+
+## Contact
+
+hello@tryai.tools
