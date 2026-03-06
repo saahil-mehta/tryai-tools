@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 
 export const metadata: Metadata = {
@@ -15,22 +15,7 @@ export default function PrivacyPolicyPage() {
   return (
     <div className="min-h-svh bg-white dark:bg-neutral-950">
       <div className="mx-auto max-w-3xl px-4 py-16 sm:py-24">
-        <nav aria-label="Breadcrumb" className="mb-12">
-          <ol className="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
-            <li>
-              <Link
-                href="/"
-                className="hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors"
-              >
-                Home
-              </Link>
-            </li>
-            <li>/</li>
-            <li className="text-neutral-900 dark:text-neutral-100">
-              Privacy Policy
-            </li>
-          </ol>
-        </nav>
+        <SiteHeader breadcrumbs={[{ label: "Privacy Policy" }]} />
 
         <h1 className="text-3xl font-semibold tracking-tight text-neutral-900 dark:text-white sm:text-4xl">
           Privacy Policy
@@ -48,10 +33,10 @@ export default function PrivacyPolicyPage() {
               tryai.tools is operated by Knowsee (knowsee.co.uk). We build free,
               browser-based utility tools. You can reach us at{" "}
               <a
-                href="mailto:hello@tryai.tools"
+                href="mailto:hello@knowsee.co.uk"
                 className="text-neutral-900 dark:text-neutral-200 underline underline-offset-4"
               >
-                hello@tryai.tools
+                hello@knowsee.co.uk
               </a>
               .
             </p>
