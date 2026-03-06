@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { SiteFooter } from "@/components/site-footer";
 import { AiDetectorTool } from "./components/ai-detector-tool";
+import {
+  LottieFeature,
+  LottieFeatureCompact,
+  HowItWorksStep,
+} from "./components/lottie-feature";
+import { ModelLogo } from "./components/model-logos";
 
 export const metadata: Metadata = {
   title:
@@ -36,7 +43,7 @@ const FAQ_ITEMS = [
   {
     question: "Which AI models can it detect?",
     answer:
-      "ChatGPT (GPT-4, GPT-4o, GPT-5), Claude (Sonnet, Opus, Haiku), Google Gemini (Pro, Ultra), DeepSeek-V3, Llama 3, Llama 4, Mistral, Mixtral, Copilot, Jasper, and Perplexity. The detection is structural, so new models based on similar architectures will generally be caught too.",
+      "ChatGPT, Claude, Gemini, DeepSeek, Llama, Mistral, Copilot, Perplexity, Cohere, Grok, and any other model built on the same transformer architecture. Detection is structural, not version-specific.",
   },
   {
     question: "Will Google penalise AI-generated content?",
@@ -252,44 +259,24 @@ export default function AiDetectorPage() {
                 How it works
               </h2>
               <div className="mt-6 grid gap-px overflow-hidden rounded-xl border border-neutral-200 bg-neutral-200 dark:border-neutral-800 dark:bg-neutral-800">
-                <div className="bg-white p-5 dark:bg-neutral-950">
-                  <p className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
-                    Step 1
-                  </p>
-                  <h3 className="mt-1.5 font-medium text-neutral-900 dark:text-neutral-100">
-                    Paste and analyse
-                  </h3>
-                  <p className="mt-1.5 text-sm text-neutral-500 dark:text-neutral-400">
-                    Drop your text in and click Analyse. Seven statistical
-                    checks run instantly in your browser, then feed into a
-                    server-side model for a combined verdict.
-                  </p>
-                </div>
-                <div className="bg-white p-5 dark:bg-neutral-950">
-                  <p className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
-                    Step 2
-                  </p>
-                  <h3 className="mt-1.5 font-medium text-neutral-900 dark:text-neutral-100">
-                    Read the report
-                  </h3>
-                  <p className="mt-1.5 text-sm text-neutral-500 dark:text-neutral-400">
-                    One unified report: overall verdict, detailed reasoning,
-                    sentence-level colour coding, and every statistical
-                    indicator that contributed to the result.
-                  </p>
-                </div>
-                <div className="bg-white p-5 dark:bg-neutral-950">
-                  <p className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
-                    Step 3
-                  </p>
-                  <h3 className="mt-1.5 font-medium text-neutral-900 dark:text-neutral-100">
-                    Download or share
-                  </h3>
-                  <p className="mt-1.5 text-sm text-neutral-500 dark:text-neutral-400">
-                    Copy the report as markdown or download a clean PDF. Handy
-                    when you need to send evidence to someone else.
-                  </p>
-                </div>
+                <HowItWorksStep
+                  step={1}
+                  lottieSrc="/lotties/markdown-copy.json"
+                  title="Paste and analyse"
+                  description="Drop your text in and click Analyse. Seven statistical checks run instantly in your browser, then feed into a server-side model for a combined verdict."
+                />
+                <HowItWorksStep
+                  step={2}
+                  lottieSrc="/lotties/reasoning.json"
+                  title="Read the report"
+                  description="One unified report: overall verdict, detailed reasoning, sentence-level colour coding, and every statistical indicator that contributed to the result."
+                />
+                <HowItWorksStep
+                  step={3}
+                  lottieSrc="/lotties/pdf-export.json"
+                  title="Download or share"
+                  description="Copy the report as markdown or download a clean PDF. Handy when you need to send evidence to someone else."
+                />
               </div>
             </section>
 
@@ -299,82 +286,181 @@ export default function AiDetectorPage() {
                 Supported models
               </h2>
               <p className="mt-4 text-neutral-500 dark:text-neutral-400 leading-relaxed">
-                Detection is structural, not model-specific. It works on output
-                from any major language model.
+                Detection is structural, not version-specific. It catches the
+                latest versions of every major model, and new ones built on the
+                same architecture.
               </p>
-              <div className="mt-5 flex flex-wrap gap-2">
+              <div className="mt-5 flex flex-wrap justify-center gap-2">
                 {[
-                  "ChatGPT",
-                  "GPT-4",
-                  "GPT-4o",
-                  "GPT-5",
-                  "Claude",
-                  "Claude 3.5 Sonnet",
-                  "Claude Opus",
-                  "Gemini",
-                  "Gemini Pro",
-                  "Gemini Ultra",
-                  "DeepSeek",
-                  "DeepSeek-V3",
-                  "Llama 3",
-                  "Llama 4",
-                  "Mistral",
-                  "Mixtral",
-                  "Copilot",
-                  "Jasper",
-                  "Perplexity",
+                  { name: "ChatGPT", href: "https://openai.com/chatgpt" },
+                  { name: "Claude", href: "https://claude.ai" },
+                  { name: "Gemini", href: "https://gemini.google.com" },
+                  { name: "DeepSeek", href: "https://www.deepseek.com" },
+                  { name: "Llama", href: "https://www.llama.com" },
+                  { name: "Mistral", href: "https://mistral.ai" },
+                  { name: "Copilot", href: "https://copilot.microsoft.com" },
+                  { name: "Perplexity", href: "https://www.perplexity.ai" },
+                  { name: "Cohere", href: "https://cohere.com" },
+                  { name: "Grok", href: "https://grok.com" },
                 ].map((model) => (
-                  <span
-                    key={model}
-                    className="rounded-md border border-neutral-200 bg-neutral-50 px-2.5 py-1 text-xs text-neutral-600 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-400"
+                  <a
+                    key={model.name}
+                    href={model.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-50 px-2.5 py-1 text-xs text-neutral-600 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-400 transition-colors hover:border-neutral-300 hover:text-neutral-900 dark:hover:border-neutral-700 dark:hover:text-neutral-200"
                   >
-                    {model}
-                  </span>
+                    <ModelLogo name={model.name} className="size-3 shrink-0" />
+                    {model.name}
+                  </a>
                 ))}
               </div>
+              <p className="mt-3 text-xs text-neutral-400 dark:text-neutral-500">
+                .... and every other model built on the same transformer
+                architecture. If it writes like a language model, we catch it.
+              </p>
             </section>
 
-            {/* Why this detector */}
+            {/* Features */}
             <section>
               <h2 className="text-2xl font-semibold tracking-tight">
-                Why this detector?
+                Features
               </h2>
-              <dl className="mt-6 grid gap-5 sm:grid-cols-2">
-                <div>
-                  <dt className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
-                    Sentence-level highlighting
-                  </dt>
-                  <dd className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
-                    Each sentence is classified individually in the original
-                    text.
-                  </dd>
+
+              {/* Hero features with Lotties */}
+              <div className="mt-8 grid gap-8 sm:grid-cols-2">
+                <LottieFeature
+                  src="/lotties/detection.json"
+                  title="Dual-layer detection"
+                  description="Heuristic analysis runs in your browser, then Gemini 2.5 Flash cross-validates with deep reasoning. Two independent systems, one verdict."
+                />
+                <LottieFeature
+                  src="/lotties/highlighting.json"
+                  title="Sentence-level highlighting"
+                  description="Every sentence classified individually with its own confidence score. Hover to see the verdict."
+                />
+                <LottieFeature
+                  src="/lotties/languages.json"
+                  title="100+ languages"
+                  description="Paste text in any language, no configuration needed. Statistical heuristics are language-agnostic by nature."
+                />
+                <LottieFeature
+                  src="/lotties/privacy.json"
+                  title="Zero data storage"
+                  description="All heuristics run client-side. We don't store your text, don't build databases, don't train on your content."
+                />
+              </div>
+
+              {/* Expandable full feature list */}
+              <details className="group mt-10">
+                <summary className="cursor-pointer list-none rounded-lg border border-neutral-200 dark:border-neutral-700 px-5 py-3 flex items-center justify-between transition-all active:scale-[0.99] hover:bg-neutral-50 dark:hover:bg-neutral-900 feature-expand-glow">
+                  <div>
+                    <span className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                      See all features
+                    </span>
+                    <span className="ml-2 text-xs text-neutral-400 dark:text-neutral-500">
+                      12 more across detection, reporting, and privacy
+                    </span>
+                  </div>
+                  <span className="group-open:rotate-180 transition-transform duration-200 text-neutral-400 dark:text-neutral-500">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path
+                        d="M4 6L8 10L12 6"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </summary>
+
+                <div className="mt-6 space-y-8">
+                  <div>
+                    <h3 className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+                      Detection Engine
+                    </h3>
+                    <div className="mt-3 grid gap-px overflow-hidden rounded-xl border border-neutral-200 bg-neutral-200 dark:border-neutral-800 dark:bg-neutral-800 sm:grid-cols-2">
+                      <LottieFeatureCompact
+                        src="/lotties/heuristics.json"
+                        title="7 statistical heuristics"
+                        description="Uniformity, burstiness, vocabulary diversity, n-gram repetition, and more."
+                      />
+                      <LottieFeatureCompact
+                        src="/lotties/model-agnostic.json"
+                        title="Model-agnostic"
+                        description="Works on all transformer-based models, including ones that don't exist yet."
+                      />
+                      <LottieFeatureCompact
+                        src="/lotties/edited-text.json"
+                        title="Catches edited AI text"
+                        description="Swapping words doesn't fool rhythm and density analysis."
+                      />
+                      <LottieFeatureCompact
+                        src="/lotties/instant.json"
+                        title="Instant heuristic results"
+                        description="Stats run in milliseconds, before the server round-trip."
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+                      Analysis &amp; Reporting
+                    </h3>
+                    <div className="mt-3 grid gap-px overflow-hidden rounded-xl border border-neutral-200 bg-neutral-200 dark:border-neutral-800 dark:bg-neutral-800 sm:grid-cols-2">
+                      <LottieFeatureCompact
+                        src="/lotties/reasoning.json"
+                        title="Detailed reasoning"
+                        description="Why it flagged each passage, citing specific structural tells."
+                      />
+                      <LottieFeatureCompact
+                        src="/lotties/patterns.json"
+                        title="Detected patterns"
+                        description="No contractions, uniform length, triple-list pattern, and others."
+                      />
+                      <LottieFeatureCompact
+                        src="/lotties/pdf-export.json"
+                        title="PDF report export"
+                        description="One-click download with verdict, reasoning, and highlights."
+                      />
+                      <LottieFeatureCompact
+                        src="/lotties/markdown-copy.json"
+                        title="Markdown copy"
+                        description="Copy your full report as formatted markdown."
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+                      Privacy &amp; Transparency
+                    </h3>
+                    <div className="mt-3 grid gap-px overflow-hidden rounded-xl border border-neutral-200 bg-neutral-200 dark:border-neutral-800 dark:bg-neutral-800 sm:grid-cols-2">
+                      <LottieFeatureCompact
+                        src="/lotties/no-account.json"
+                        title="No account required"
+                        description="No sign-up, no email. Paste and go."
+                      />
+                      <LottieFeatureCompact
+                        src="/lotties/no-cookies.json"
+                        title="No tracking cookies"
+                        description="Scan count lives in localStorage. That's it."
+                      />
+                      <LottieFeatureCompact
+                        src="/lotties/open-methodology.json"
+                        title="Open methodology"
+                        description="We publish what we check and how we weight it."
+                      />
+                      <LottieFeatureCompact
+                        src="/lotties/mixed-verdicts.json"
+                        title="Honest mixed verdicts"
+                        description="Part human, part AI? We say so. No forced binary."
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <dt className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
-                    Published reasoning
-                  </dt>
-                  <dd className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
-                    Every verdict comes with the evidence behind it.
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
-                    Downloadable report
-                  </dt>
-                  <dd className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
-                    Copy as markdown or download a PDF. Send it to a colleague,
-                    attach it to a submission.
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
-                    Free, no account
-                  </dt>
-                  <dd className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
-                    Five scans per day, full report every time.
-                  </dd>
-                </div>
-              </dl>
+              </details>
             </section>
 
             {/* Use cases */}
@@ -486,13 +572,45 @@ export default function AiDetectorPage() {
                       <td className="px-5 py-3">No</td>
                       <td className="px-5 py-3">No</td>
                     </tr>
-                    <tr>
+                    <tr className="border-b border-neutral-200/60 dark:border-neutral-800/60">
                       <td className="px-5 py-3">Sign-up needed</td>
                       <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">
                         No
                       </td>
                       <td className="px-5 py-3">No</td>
                       <td className="px-5 py-3">Yes (full)</td>
+                    </tr>
+                    <tr className="border-b border-neutral-200/60 dark:border-neutral-800/60">
+                      <td className="px-5 py-3">Multilingual</td>
+                      <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">
+                        100+ languages
+                      </td>
+                      <td className="px-5 py-3">English only</td>
+                      <td className="px-5 py-3">Limited</td>
+                    </tr>
+                    <tr className="border-b border-neutral-200/60 dark:border-neutral-800/60">
+                      <td className="px-5 py-3">Data storage</td>
+                      <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">
+                        None
+                      </td>
+                      <td className="px-5 py-3">Unclear</td>
+                      <td className="px-5 py-3">Yes</td>
+                    </tr>
+                    <tr className="border-b border-neutral-200/60 dark:border-neutral-800/60">
+                      <td className="px-5 py-3">Statistical indicators</td>
+                      <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">
+                        7 metrics
+                      </td>
+                      <td className="px-5 py-3">No</td>
+                      <td className="px-5 py-3">Perplexity only</td>
+                    </tr>
+                    <tr>
+                      <td className="px-5 py-3">Explainability</td>
+                      <td className="px-5 py-3 text-neutral-900 dark:text-neutral-100">
+                        Full reasoning + patterns
+                      </td>
+                      <td className="px-5 py-3">No</td>
+                      <td className="px-5 py-3">Basic</td>
                     </tr>
                   </tbody>
                 </table>
@@ -535,18 +653,7 @@ export default function AiDetectorPage() {
             </section>
           </article>
 
-          {/* Footer */}
-          <footer className="mt-24 border-t border-neutral-200 dark:border-neutral-800 pt-8 text-center text-sm text-neutral-500">
-            <p>
-              <Link
-                href="/"
-                className="hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors"
-              >
-                tryai.tools
-              </Link>{" "}
-              - AI tools, simplified.
-            </p>
-          </footer>
+          <SiteFooter />
         </div>
       </div>
     </>

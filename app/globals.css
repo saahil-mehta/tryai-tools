@@ -5,3 +5,20 @@
 @theme inline {
   --font-sans: var(--font-plus-jakarta);
 }
+
+.feature-expand-glow {
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.12);
+}
+.feature-expand-glow:hover {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.06);
+}
+:is(.dark) .feature-expand-glow {
+  box-shadow:
+    0 0 25px rgba(255, 255, 255, 0.15),
+    0 0 60px rgba(255, 255, 255, 0.06);
+}
+:is(.dark) .feature-expand-glow:hover {
+  box-shadow:
+    0 0 20px rgba(255, 255, 255, 0.08),
+    0 0 50px rgba(255, 255, 255, 0.04);
+}
