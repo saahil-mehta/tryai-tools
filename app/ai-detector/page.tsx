@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { AiDetectorTool } from "./components/ai-detector-tool";
 import {
@@ -22,12 +21,21 @@ export const metadata: Metadata = {
     url: "https://tryai.tools/ai-detector",
     siteName: "tryai.tools",
     type: "website",
+    images: [
+      {
+        url: "https://tryai.tools/og.png",
+        width: 1200,
+        height: 630,
+        alt: "tryai.tools - simple tools to make your life easy",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "AI Content Detector - Free AI Text Checker | tryai.tools",
     description:
       "Paste your text for instant AI detection with sentence-level highlighting.",
+    images: ["https://tryai.tools/og.png"],
   },
   alternates: {
     canonical: "https://tryai.tools/ai-detector",
@@ -190,40 +198,29 @@ export default function AiDetectorPage() {
       <JsonLd />
       <div className="min-h-svh bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100">
         <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-20">
-          {/* Top bar */}
-          <div className="mb-8 flex items-center justify-between">
-            <nav
-              aria-label="Breadcrumb"
-              className="text-sm text-neutral-400 dark:text-neutral-500"
-            >
-              <ol className="flex items-center gap-2">
-                <li>
-                  <Link
-                    href="/"
-                    className="hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors"
-                  >
-                    Home
-                  </Link>
-                </li>
-                <li aria-hidden="true">/</li>
-                <li>
-                  <span className="text-neutral-500 dark:text-neutral-400">
-                    AI Tools
-                  </span>
-                </li>
-                <li aria-hidden="true">/</li>
-                <li>
-                  <span className="text-neutral-700 dark:text-neutral-300">
-                    AI Content Detector
-                  </span>
-                </li>
-              </ol>
-            </nav>
-            <ThemeToggle />
-          </div>
+          <SiteHeader
+            breadcrumbs={[
+              { label: "AI Tools", href: "/" },
+              { label: "AI Content Detector" },
+            ]}
+          />
 
           {/* Header */}
           <header className="mb-10 text-center">
+            <div className="flex items-center justify-center gap-3 mb-1">
+              <svg
+                width="36"
+                height="36"
+                viewBox="0 0 124 124"
+                fill="none"
+                className="text-neutral-900 dark:text-neutral-100 shrink-0"
+              >
+                <path
+                  d="M31 46.5C22.4396 46.5 15.5 53.4394 15.5 62C15.5 70.5607 22.4396 77.5 31 77.5C39.5604 77.5 46.5 70.5607 46.5 62C46.5 58.7083 45.4796 55.6698 43.7378 53.165C40.9295 49.1263 36.271 46.5 31 46.5ZM5.16669 62C5.16669 47.7327 16.7327 36.1667 31 36.1667C37.2719 36.1667 43.0208 38.4042 47.4922 42.1161C51.2206 38.4402 56.3425 36.1667 62 36.1667C67.6575 36.1667 72.7792 38.4402 76.508 42.1161C80.9792 38.4042 86.7282 36.1667 93 36.1667C107.267 36.1667 118.833 47.7327 118.833 62C118.833 76.2673 107.267 87.8334 93 87.8334C78.7328 87.8334 67.1667 76.2673 67.1667 62C67.1667 57.7814 68.1814 53.7902 69.9799 50.2668C68.0812 47.962 65.208 46.5 62 46.5C58.792 46.5 55.9189 47.962 54.0201 50.2668C55.8186 53.7902 56.8334 57.7814 56.8334 62C56.8334 76.2673 45.2674 87.8334 31 87.8334C16.7327 87.8334 5.16669 76.2673 5.16669 62ZM93 46.5C87.729 46.5 83.0707 49.1263 80.2621 53.165C78.5204 55.6698 77.5 58.7083 77.5 62C77.5 70.5607 84.4394 77.5 93 77.5C101.561 77.5 108.5 70.5607 108.5 62C108.5 53.4394 101.561 46.5 93 46.5Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </div>
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
               AI Content Detector
             </h1>

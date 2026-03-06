@@ -6,6 +6,22 @@ import type { LottieRefCurrentProps } from "lottie-react";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
+function useDarkMode() {
+  const [dark, setDark] = useState(false);
+  useEffect(() => {
+    const html = document.documentElement;
+    const update = () => setDark(html.classList.contains("dark"));
+    update();
+    const observer = new MutationObserver(update);
+    observer.observe(html, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+  return dark;
+}
+
+const FILTER_LIGHT = "brightness(0)";
+const FILTER_DARK = "brightness(0) invert(1)";
+
 function useLottieAnimation(src: string) {
   const [animationData, setAnimationData] = useState(null);
   const lottieRef = useRef<LottieRefCurrentProps>(null);
@@ -39,12 +55,17 @@ export function LottieFeature({
   description: string;
 }) {
   const { animationData, lottieRef, handleComplete } = useLottieAnimation(src);
+  const dark = useDarkMode();
 
   return (
     <div className="flex items-start gap-5">
       <div
         className="shrink-0"
-        style={{ width: 56, height: 56, filter: "brightness(0) invert(1)" }}
+        style={{
+          width: 56,
+          height: 56,
+          filter: dark ? FILTER_DARK : FILTER_LIGHT,
+        }}
       >
         {animationData && (
           <Lottie
@@ -79,12 +100,17 @@ export function LottieFeatureCompact({
   description?: string;
 }) {
   const { animationData, lottieRef, handleComplete } = useLottieAnimation(src);
+  const dark = useDarkMode();
 
   return (
     <div className="flex items-start gap-3 bg-white p-4 dark:bg-neutral-950">
       <div
         className="shrink-0 mt-0.5"
-        style={{ width: 28, height: 28, filter: "brightness(0) invert(1)" }}
+        style={{
+          width: 28,
+          height: 28,
+          filter: dark ? FILTER_DARK : FILTER_LIGHT,
+        }}
       >
         {animationData && (
           <Lottie
@@ -124,12 +150,17 @@ export function HowItWorksStep({
 }) {
   const { animationData, lottieRef, handleComplete } =
     useLottieAnimation(lottieSrc);
+  const dark = useDarkMode();
 
   return (
     <div className="flex items-center gap-5 bg-white p-5 dark:bg-neutral-950">
       <div
         className="shrink-0"
-        style={{ width: 40, height: 40, filter: "brightness(0) invert(1)" }}
+        style={{
+          width: 40,
+          height: 40,
+          filter: dark ? FILTER_DARK : FILTER_LIGHT,
+        }}
       >
         {animationData && (
           <Lottie
