@@ -1,12 +1,119 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { SiteFooter } from "@/components/site-footer";
+
+export const metadata: Metadata = {
+  title: "Free AI Tools Online — Detection, Analysis & More | tryai.tools",
+  description:
+    "Free browser-based AI tools. Detect AI-generated text, analyse content, and more. No sign-up, no data stored, fast results.",
+  openGraph: {
+    title: "Free AI Tools Online | tryai.tools",
+    description:
+      "Free browser-based AI tools. Detect AI-generated text, analyse content, and more.",
+    url: "https://tryai.tools",
+    siteName: "tryai.tools",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Free AI Tools Online | tryai.tools",
+    description:
+      "Free browser-based AI tools. Detect AI-generated text, analyse content, and more.",
+  },
+  alternates: {
+    canonical: "https://tryai.tools",
+  },
+};
+
+const tools = [
+  {
+    name: "AI Content Detector",
+    slug: "ai-detector",
+    description:
+      "Paste any text and get an instant verdict. Seven statistical checks run in your browser, then a server-side model classifies each sentence. Works with ChatGPT, Claude, Gemini, and more.",
+    tag: "Detection",
+  },
+];
+
 export default function Home() {
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center bg-white dark:bg-neutral-950 px-4">
-      <h1 className="text-4xl font-semibold tracking-tight text-neutral-900 dark:text-white sm:text-5xl">
-        tryai.tools
-      </h1>
-      <p className="mt-4 text-lg text-neutral-500 dark:text-neutral-400">
-        AI tools, simplified.
-      </p>
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "tryai.tools",
+            url: "https://tryai.tools",
+            description:
+              "Free browser-based AI tools. Detect AI-generated text, analyse content, and more.",
+            publisher: {
+              "@type": "Organization",
+              name: "Knowsee",
+              url: "https://knowsee.co.uk",
+            },
+          }),
+        }}
+      />
+
+      <div className="min-h-svh bg-white dark:bg-neutral-950">
+        <div className="mx-auto max-w-3xl px-4 py-16 sm:py-24">
+          <div className="flex items-start justify-between">
+            <div>
+              <h1 className="text-3xl font-semibold tracking-tight text-neutral-900 dark:text-white sm:text-4xl">
+                tryai.tools
+              </h1>
+              <p className="mt-3 text-lg text-neutral-500 dark:text-neutral-400">
+                Free AI tools that run in your browser. No sign-up, no data
+                stored.
+              </p>
+            </div>
+            <ThemeToggle />
+          </div>
+
+          <section className="mt-16">
+            <h2 className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+              Tools
+            </h2>
+            <div className="mt-4 divide-y divide-neutral-200 rounded-xl border border-neutral-200 dark:divide-neutral-800 dark:border-neutral-800">
+              {tools.map((tool) => (
+                <Link
+                  key={tool.slug}
+                  href={`/${tool.slug}`}
+                  className="group flex items-start justify-between gap-4 px-5 py-5 transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-900/50 first:rounded-t-xl last:rounded-b-xl"
+                >
+                  <div className="min-w-0">
+                    <h3 className="font-medium text-neutral-900 dark:text-neutral-100 group-hover:text-neutral-600 dark:group-hover:text-neutral-300 transition-colors">
+                      {tool.name}
+                    </h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
+                      {tool.description}
+                    </p>
+                  </div>
+                  <span className="mt-0.5 shrink-0 rounded-md border border-neutral-200 dark:border-neutral-800 px-2 py-0.5 text-xs text-neutral-500 dark:text-neutral-400">
+                    {tool.tag}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          <section className="mt-16">
+            <h2 className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+              More coming soon
+            </h2>
+            <p className="mt-4 text-sm text-neutral-500 dark:text-neutral-400">
+              We&apos;re building more tools based on what people actually
+              search for. Each one is free, runs client-side where possible, and
+              doesn&apos;t need an account.
+            </p>
+          </section>
+
+          <SiteFooter />
+        </div>
+      </div>
+    </>
   );
 }
