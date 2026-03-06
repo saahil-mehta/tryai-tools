@@ -15,13 +15,26 @@ export const metadata: Metadata = {
   description: "Simple tools to make your life easy.",
 };
 
-// Inline script to set dark mode before paint — prevents FOUC
-const themeScript = `
+// Inline script to set dark mode + Google Consent Mode v2 before paint
+const headScript = `
   (function() {
     var stored = localStorage.getItem('theme');
     if (stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
       document.documentElement.classList.add('dark');
     }
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    window.gtag = gtag;
+
+    var cc = localStorage.getItem('cookie-consent');
+    var state = cc === 'granted' ? 'granted' : 'denied';
+    gtag('consent', 'default', {
+      ad_storage: state,
+      ad_personalization: state,
+      ad_user_data: state,
+      analytics_storage: state,
+    });
   })();
 `;
 
@@ -33,7 +46,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: headScript }} />
       </head>
       <body className={`${plusJakarta.variable} antialiased`}>
         {children}
