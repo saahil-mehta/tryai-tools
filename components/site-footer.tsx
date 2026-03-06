@@ -41,7 +41,7 @@ export function SiteFooter() {
             rel="noopener noreferrer"
             className={inlineClass}
           >
-            Saahil
+            Saahil Mehta
           </a>
         </p>
       </div>
