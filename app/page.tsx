@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { UpcomingTools } from "@/components/upcoming-tools";
 
 export const metadata: Metadata = {
   title:
@@ -105,13 +106,36 @@ export default function Home() {
 
           <section className="mt-16">
             <h2 className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
-              More coming soon
+              What we build
             </h2>
-            <p className="mt-4 text-sm text-neutral-500 dark:text-neutral-400">
-              We&apos;re building more tools based on what people actually
-              search for. Each one is free, runs client-side where possible, and
-              doesn&apos;t need an account.
+            <p className="mt-4 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+              Free, browser-based utilities that do one thing well. We
+              don&apos;t ask for your email, we don&apos;t store your data, and
+              we don&apos;t gate features behind a paywall. You open the page,
+              use the tool, and close the tab. That&apos;s it.
             </p>
+          </section>
+
+          <section className="mt-16">
+            <h2 className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+              How it works
+            </h2>
+            <p className="mt-4 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+              Most of the heavy lifting happens in your browser. Client-side
+              processing means your input stays on your device wherever
+              possible. When a tool does need a server (like running an AI
+              model), we send the minimum required, process it, and discard it
+              immediately. Nothing gets logged, nothing gets saved.
+            </p>
+          </section>
+
+          <section className="mt-16">
+            <h2 className="text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+              What&apos;s next
+            </h2>
+            <div className="mt-4">
+              <UpcomingTools />
+            </div>
           </section>
 
           <section className="mt-16">
