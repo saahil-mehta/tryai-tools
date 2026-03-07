@@ -4,7 +4,7 @@ module.exports = {
   generateRobotsTxt: true,
   changefreq: "weekly",
   priority: 0.7,
-  exclude: ["/icon.svg"],
+  exclude: ["/icon.svg", "/icon*"],
   robotsTxtOptions: {
     policies: [
       {
