@@ -331,7 +331,7 @@ export default function AiDetectorPage() {
                 <LottieFeature
                   src="/lotties/detection.json"
                   title="Dual-layer detection"
-                  description="Heuristic analysis runs in your browser, then Gemini 2.5 Flash cross-validates with deep reasoning. Two independent systems, one verdict."
+                  description="Heuristic analysis runs in your browser, then a state-of-the-art LLM cross-validates with deep reasoning. Two independent systems, one verdict."
                 />
                 <LottieFeature
                   src="/lotties/highlighting.json"
