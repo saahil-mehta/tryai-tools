@@ -5,7 +5,6 @@ import Link from "next/link";
 import Script from "next/script";
 
 const GA_ID = "G-Q6LZBPTHLF";
-const ADSENSE_CLIENT = "ca-pub-8849126721468775";
 const CONSENT_KEY = "cookie-consent";
 
 type Consent = "granted" | "denied" | null;
@@ -56,13 +55,6 @@ export function CookieConsent() {
 
   return (
     <>
-      {/* AdSense — always loaded, consent mode controls personalisation */}
-      <Script
-        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`}
-        strategy="afterInteractive"
-        crossOrigin="anonymous"
-      />
-
       {/* GA4 scripts — only load after consent */}
       {consent === "granted" && (
         <>

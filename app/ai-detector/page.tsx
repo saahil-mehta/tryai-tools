@@ -8,6 +8,7 @@ import {
   HowItWorksStep,
 } from "./components/lottie-feature";
 import { ModelLogo } from "./components/model-logos";
+import { AdSense } from "@/components/adsense";
 
 export const metadata: Metadata = {
   title:
@@ -196,6 +197,7 @@ export default function AiDetectorPage() {
   return (
     <>
       <JsonLd />
+      <AdSense />
       <div className="min-h-svh bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100">
         <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-20">
           <SiteHeader
